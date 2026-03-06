@@ -1,22 +1,50 @@
 const people = [
-  { nombre: "Juan Pérez", categoria: "Docente", ciudad: "Sede Central Medellín", correo: "juan.perez@upb.edu.co" },
-  { nombre: "Laura Gómez", categoria: "Investigador", ciudad: "Seccional Bucaramanga", correo: "laura.gomez@upb.edu.co" },
-  { nombre: "Carlos Rincón", categoria: "Administrativo", ciudad: "Seccional Montería", correo: "carlos.rincon@upb.edu.co" },
-  { nombre: "Ana Martínez", categoria: "Docente", ciudad: "Seccional Palmira", correo: "ana.martinez@upb.edu.co" },
-  { nombre: "Santiago Ruiz", categoria: "Docente", ciudad: "Seccional Bucaramanga", correo: "santiago.ruiz@upb.edu.co" }
+  {
+    nombre: "Thomas Angulo",
+    categoria: "Docente",
+    ciudad: "Sede Central Medellín",
+    correo: "thomas.angulo@upb.edu.co",
+    dependencia: "Facultad de Ingeniería de Sistemas",
+    telefono: "+57 300 000 0000",
+    imagen: "thomas.jpg"
+  },
+  {
+    nombre: "Juan hernandez",
+    categoria: "Investigador",
+    ciudad: "Seccional Bucaramanga",
+    correo: "juan.hernandez@upb.edu.co",
+    dependencia: "Centro de Investigación e Innovación",
+    telefono: "+57 300 000 0000",
+    imagen: "hernandez.jpg"
+  },
+  {
+    nombre: "Juan Felipe",
+    categoria: "Administrativo",
+    ciudad: "Seccional Montería",
+    correo: "juan.calvo@upb.edu.co",
+    dependencia: "Dirección Administrativa",
+    telefono: "+57 300 000 0000",
+    imagen: "juan.jpg"
+  },
+  {
+    nombre: "Santiago Figueroa",
+    categoria: "Docente",
+    ciudad: "Seccional Palmira",
+    correo: "santiago.figueroa@upb.edu.co",
+    dependencia: "Facultad de Ciencias Sociales",
+    telefono: "+57 300 000 0000",
+    imagen: "santiago.jpg"
+  },
+  {
+    nombre: "Sandra Reyes",
+    categoria: "Docente",
+    ciudad: "Seccional Bucaramanga",
+    correo: "sandra.reyes@upb.edu.co",
+    dependencia: "Facultad de Ingenieria de Sistemas",
+    telefono: "+57 300 000 0000",
+    imagen: "sandra.jpg"
+  }
 ];
-
-const resultsEl = document.getElementById("results");
-const counterEl = document.getElementById("counter");
-
-const searchInput = document.getElementById("searchInput");
-const btnSearch = document.getElementById("btnSearch");
-const btnReset = document.getElementById("btnReset");
-
-const subcatSelect = document.getElementById("subcatSelect");
-const citySelect = document.getElementById("citySelect");
-
-let selectedLetter = "";
 
 /* ===== MODAL ===== */
 const modal = document.getElementById("detailModal");
@@ -27,12 +55,16 @@ const mNombre = document.getElementById("mNombre");
 const mCiudad = document.getElementById("mCiudad");
 const mCategoria = document.getElementById("mCategoria");
 const mCorreo = document.getElementById("mCorreo");
+const mDependencia = document.getElementById("mDependencia");
+const mTelefono = document.getElementById("mTelefono");
 
 function openModal(persona){
   mNombre.textContent = persona.nombre;
   mCiudad.textContent = persona.ciudad;
   mCategoria.textContent = persona.categoria;
   mCorreo.textContent = persona.correo;
+  mDependencia.textContent = persona.dependencia;
+  mTelefono.textContent = persona.telefono;
 
   modal.classList.add("open");
   modal.setAttribute("aria-hidden", "false");
@@ -69,14 +101,16 @@ function render(list){
     card.className = "card";
 
     card.innerHTML = `
-      <img src="img/user.jpg" alt="usuario">
-      <div>
-        <a class="name-link" href="#">${p.nombre}</a>
-        <p><b>${p.ciudad.replace("Seccional ", "")}</b></p>
-        <p><b>Título:</b> ${p.categoria}</p>
-        <p>${p.correo}</p>
-      </div>
-    `;
+  <img src="${p.imagen}" alt="${p.nombre}">
+  <div>
+    <a class="name-link" href="#">${p.nombre}</a>
+    <p><b>${p.ciudad.replace("Seccional ", "")}</b></p>
+    <p><b>Título:</b> ${p.categoria}</p>
+    <p><b>Dependencia:</b> ${p.dependencia}</p>
+    <p><b>Tel:</b> ${p.telefono}</p>
+    <p>${p.correo}</p>
+  </div>
+`;
 
     const link = card.querySelector(".name-link");
     link.addEventListener("click", (e) => {
