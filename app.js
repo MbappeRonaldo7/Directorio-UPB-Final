@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
       correo: "thomas.angulo@upb.edu.co",
       dependencia: "Facultad de Ingeniería de Sistemas",
       telefono: "+57 300 000 0000",
-      imagen: "thomas.jpg"
+      imagen: "thomas.jpeg"
     },
     {
       nombre: "Juan Hernandez",
@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
       correo: "juan.hernandez@upb.edu.co",
       dependencia: "Centro de Investigación e Innovación",
       telefono: "+57 300 000 0000",
-      imagen: "hernandez.jpg"
+      imagen: "hernandez.jpeg"
     },
     {
       nombre: "Juan Felipe",
@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
       correo: "juan.calvo@upb.edu.co",
       dependencia: "Dirección Administrativa",
       telefono: "+57 300 000 0000",
-      imagen: "juan.jpg"
+      imagen: "juan.jpeg"
     },
     {
       nombre: "Santiago Figueroa",
@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
       correo: "santiago.figueroa@upb.edu.co",
       dependencia: "Facultad de Ciencias Sociales",
       telefono: "+57 300 000 0000",
-      imagen: "santiago.jpg"
+      imagen: "santiago.jpeg"
     },
     {
       nombre: "Sandra Reyes",
@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
       correo: "sandra.reyes@upb.edu.co",
       dependencia: "Facultad de Ingeniería de Sistemas",
       telefono: "+57 300 000 0000",
-      imagen: "sandra.jpg"
+      imagen: "sandra.jpeg"
     }
   ];
 
