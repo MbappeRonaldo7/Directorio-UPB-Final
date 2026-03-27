@@ -7,11 +7,10 @@ document.getElementById("loginForm").addEventListener("submit", function(e) {
 
   mensaje.textContent = "";
 
-  // Simulación login
   if (usuario === "admin" && password === "1234") {
     mensaje.style.color = "green";
     mensaje.textContent = "Ingreso correcto (Admin)";
-    
+
     setTimeout(() => {
       window.location.href = "admin.html";
     }, 1000);
@@ -19,7 +18,7 @@ document.getElementById("loginForm").addEventListener("submit", function(e) {
   } else if (usuario === "usuario" && password === "1234") {
     mensaje.style.color = "green";
     mensaje.textContent = "Ingreso correcto (Usuario)";
-    
+
     setTimeout(() => {
       window.location.href = "privado.html";
     }, 1000);
