@@ -8,6 +8,8 @@ document.getElementById("loginForm").addEventListener("submit", function(e) {
   mensaje.textContent = "";
 
   if (usuario === "admin" && password === "upb1234") {
+    localStorage.setItem("usuarioRol", "admin");
+
     mensaje.style.color = "green";
     mensaje.textContent = "Ingreso correcto (Admin)";
 
@@ -16,6 +18,8 @@ document.getElementById("loginForm").addEventListener("submit", function(e) {
     }, 1000);
 
   } else if (usuario === "usuario" && password === "1234") {
+    localStorage.setItem("usuarioRol", "usuario");
+
     mensaje.style.color = "green";
     mensaje.textContent = "Ingreso correcto (Usuario)";
 
@@ -24,6 +28,7 @@ document.getElementById("loginForm").addEventListener("submit", function(e) {
     }, 1000);
 
   } else {
+    localStorage.removeItem("usuarioRol");
     mensaje.style.color = "red";
     mensaje.textContent = "Usuario o contraseña incorrectos";
   }
