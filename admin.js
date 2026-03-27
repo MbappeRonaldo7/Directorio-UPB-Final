@@ -1,8 +1,17 @@
 document.addEventListener("DOMContentLoaded", () => {
+  const rol = localStorage.getItem("usuarioRol");
+
+  if (rol !== "admin") {
+    alert("Acceso no autorizado");
+    window.location.href = "login.html";
+    return;
+  }
+
   const form = document.getElementById("adminForm");
   const tableBody = document.getElementById("adminTableBody");
   const cancelEditBtn = document.getElementById("cancelEdit");
   const formMessage = document.getElementById("formMessage");
+  const logoutBtn = document.getElementById("logoutBtn");
 
   const nombreInput = document.getElementById("nombre");
   const tipoInput = document.getElementById("tipo");
@@ -14,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let editIndex = null;
 
-  let registros = [
+  let registros = JSON.parse(localStorage.getItem("registrosAdmin")) || [
     {
       nombre: "Thomas Angulo",
       tipo: "Docente",
@@ -49,9 +58,13 @@ document.addEventListener("DOMContentLoaded", () => {
       correo: "santiago.figueroa@upb.edu.co",
       extension: "1540",
       oficina: "Edificio D - 105",
-      estado: "Inactivo"
+      estado: "Activo"
     }
   ];
+
+  function guardarRegistros() {
+    localStorage.setItem("registrosAdmin", JSON.stringify(registros));
+  }
 
   function renderTable() {
     tableBody.innerHTML = "";
@@ -119,6 +132,7 @@ document.addEventListener("DOMContentLoaded", () => {
       formMessage.textContent = "Registro actualizado correctamente.";
     }
 
+    guardarRegistros();
     renderTable();
     resetForm();
   });
@@ -143,15 +157,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (action === "toggle") {
       registros[index].estado = registros[index].estado === "Activo" ? "Inactivo" : "Activo";
+      guardarRegistros();
       renderTable();
     }
 
     if (action === "delete") {
       registros.splice(index, 1);
+      guardarRegistros();
       renderTable();
       resetForm();
     }
   });
 
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      localStorage.removeItem("usuarioRol");
+      window.location.href = "login.html";
+    });
+  }
+
+  guardarRegistros();
   renderTable();
 });
