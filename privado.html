@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vista interna - Directorio UPB</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <title>Directorio Interno UPB</title>
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
+  <!-- HEADER -->
   <header class="topbar">
     <div class="topbar-inner">
       <img class="upb-logo" src="user.jpg" alt="UPB">
+
       <nav class="topbar-nav">
         <a href="index.html">Inicio</a>
         <a href="#">Directorio Interno</a>
@@ -19,6 +21,7 @@
     </div>
   </header>
 
+  <!-- HEADER TEXTO -->
   <section class="page-header">
     <div class="breadcrumb">
       <a href="index.html">Inicio</a> &gt;
@@ -33,10 +36,13 @@
     </p>
   </section>
 
+  <!-- BLOQUE SUPERIOR -->
   <section class="hero">
     <div class="hero-card">
+
       <div class="hero-left">
         <div class="hero-cols">
+
           <ul>
             <li>Docentes</li>
             <li>Administrativos</li>
@@ -45,58 +51,66 @@
           </ul>
 
           <ul>
-            <li>Ingeniería de Sistemas</li>
-            <li>Ciencias Sociales</li>
-            <li>Dirección Administrativa</li>
-            <li>Investigación e Innovación</li>
+            <li>Atención al estudiante</li>
+            <li>Gestión académica</li>
+            <li>Servicios financieros</li>
+            <li>Soporte institucional</li>
           </ul>
 
           <ul>
-            <li>Consulta por nombre</li>
-            <li>Consulta por dependencia</li>
-            <li>Consulta por tipo</li>
+            <li>Búsqueda por nombre</li>
+            <li>Filtro por dependencia</li>
+            <li>Filtro por tipo</li>
           </ul>
+
         </div>
       </div>
 
       <div class="hero-right">
         <div class="search-box">
-          <input id="searchInputPrivado" type="text" placeholder="Buscar por nombre..." />
-          <button id="btnSearchPrivado" type="button">Buscar</button>
+          <input id="searchInputPrivado" type="text" placeholder="Buscar por nombre...">
+          <button id="btnSearchPrivado">Buscar</button>
         </div>
 
-        <button class="btn-secondary" id="btnResetPrivado" type="button">Regresar</button>
+        <button class="btn-secondary" id="btnResetPrivado">Regresar</button>
       </div>
+
     </div>
   </section>
 
+  <!-- FILTROS -->
   <section class="filters-line">
     <div class="filters-inner">
+
       <div class="filters-left">
         <span id="counterPrivado">Mostrando 0 personas</span>
       </div>
 
       <div class="filters-right">
-        <label for="dependenciaSelect">Dependencia:</label>
+
+        <label>Dependencia:</label>
         <select id="dependenciaSelect">
           <option value="Todas">Todas</option>
-          <option value="Facultad de Ingeniería de Sistemas">Facultad de Ingeniería de Sistemas</option>
-          <option value="Centro de Investigación e Innovación">Centro de Investigación e Innovación</option>
-          <option value="Dirección Administrativa">Dirección Administrativa</option>
-          <option value="Facultad de Ciencias Sociales">Facultad de Ciencias Sociales</option>
+          <option value="Atención al estudiante">Atención al estudiante</option>
+          <option value="Gestión académica">Gestión académica</option>
+          <option value="Servicios financieros">Servicios financieros</option>
+          <option value="Soporte institucional">Soporte institucional</option>
+          <option value="Facultad">Facultad</option>
         </select>
 
-        <label for="tipoSelect">Tipo:</label>
+        <label>Tipo:</label>
         <select id="tipoSelect">
           <option value="Todos">Todos</option>
           <option value="Docente">Docente</option>
           <option value="Investigador">Investigador</option>
           <option value="Administrativo">Administrativo</option>
         </select>
+
       </div>
     </div>
   </section>
 
+  <!-- ALFABETO -->
   <section class="alphabet">
     <a href="#">A</a><a href="#">B</a><a href="#">C</a><a href="#">D</a><a href="#">E</a><a href="#">F</a>
     <a href="#">G</a><a href="#">H</a><a href="#">I</a><a href="#">J</a><a href="#">K</a><a href="#">L</a>
@@ -105,8 +119,10 @@
     <a href="#">Y</a><a href="#">Z</a>
   </section>
 
+  <!-- RESULTADOS -->
   <section class="results" id="resultsPrivado"></section>
 
+  <!-- FOOTER -->
   <footer class="footer">
     <div class="footer-content">
       <p><b>Universidad Pontificia Bolivariana</b></p>
@@ -116,5 +132,6 @@
   </footer>
 
   <script src="privado.js"></script>
+
 </body>
 </html>
