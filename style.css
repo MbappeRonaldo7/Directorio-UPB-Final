@@ -572,3 +572,31 @@ main{
   transform:translateY(-1px);
   text-decoration:none;
 }
+
+.card{
+  transition: all .2s ease;
+}
+
+.card:hover{
+  transform: translateY(-3px);
+  box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+.admin-card,
+.hero-card{
+  box-shadow:0 10px 25px rgba(0,0,0,0.06);
+}
+
+.btn-admin,
+.btn-secondary,
+.login-btn,
+.search-box button{
+  transition:0.2s ease;
+}
+
+.btn-admin:hover,
+.btn-secondary:hover,
+.login-btn:hover,
+.search-box button:hover{
+  transform:translateY(-1px);
+}
