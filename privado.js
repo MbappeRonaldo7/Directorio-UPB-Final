@@ -1,12 +1,22 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const personas = [
+  const rol = localStorage.getItem("usuarioRol");
+
+  if (rol !== "usuario" && rol !== "admin") {
+    alert("Acceso no autorizado");
+    window.location.href = "login.html";
+    return;
+  }
+
+  const registrosAdmin = JSON.parse(localStorage.getItem("registrosAdmin"));
+
+  const personas = registrosAdmin || [
     {
       nombre: "Thomas Angulo",
       tipo: "Docente",
       dependencia: "Facultad",
       correo: "thomas.angulo@upb.edu.co",
       extension: "1234",
-      oficina: "Edificio j - 201",
+      oficina: "Edificio A - 201",
       imagen: "thomas.jpeg"
     },
     {
@@ -15,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
       dependencia: "Soporte institucional",
       correo: "juan.hernandez@upb.edu.co",
       extension: "2231",
-      oficina: "Edificio B - 204",
+      oficina: "Edificio B - 104",
       imagen: "hernandez.jpeg"
     },
     {
@@ -33,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
       dependencia: "Gestión académica",
       correo: "santiago.figueroa@upb.edu.co",
       extension: "1540",
-      oficina: "Edificio D - 305",
+      oficina: "Edificio D - 105",
       imagen: "santiago.jpeg"
     },
     {
@@ -42,10 +52,12 @@ document.addEventListener("DOMContentLoaded", () => {
       dependencia: "Atención al estudiante",
       correo: "sandra.reyes@upb.edu.co",
       extension: "1288",
-      oficina: "Edificio k - 404",
+      oficina: "Edificio A - 210",
       imagen: "sandra.jpeg"
     }
   ];
+
+  const personasActivas = personas.filter((p) => !p.estado || p.estado === "Activo");
 
   const resultsEl = document.getElementById("resultsPrivado");
   const counterEl = document.getElementById("counterPrivado");
@@ -54,6 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnReset = document.getElementById("btnResetPrivado");
   const dependenciaSelect = document.getElementById("dependenciaSelect");
   const tipoSelect = document.getElementById("tipoSelect");
+  const logoutBtn = document.getElementById("logoutBtnPrivado");
 
   let selectedLetter = "";
 
@@ -71,7 +84,6 @@ document.addEventListener("DOMContentLoaded", () => {
       card.className = "card";
 
       card.innerHTML = `
-        <img src="${p.imagen}" alt="${p.nombre}">
         <div>
           <h3 class="name-link">${p.nombre}</h3>
           <p><b>Tipo:</b> ${p.tipo}</p>
@@ -91,7 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const dependencia = dependenciaSelect.value;
     const tipo = tipoSelect.value;
 
-    const filtered = personas.filter((p) => {
+    const filtered = personasActivas.filter((p) => {
       const okText =
         text === "" ||
         p.nombre.toLowerCase().includes(text) ||
@@ -145,8 +157,16 @@ document.addEventListener("DOMContentLoaded", () => {
     selectedLetter = "";
 
     document.querySelectorAll(".alphabet a").forEach((x) => x.classList.remove("active"));
-    render(personas);
+    render(personasActivas);
   });
 
-  render(personas);
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      localStorage.removeItem("usuarioRol");
+      window.location.href = "login.html";
+    });
+  }
+
+  render(personasActivas);
 });
