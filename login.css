@@ -1,1 +1,84 @@
+body{
+  margin:0;
+  font-family: Arial, sans-serif;
+}
 
+.container{
+  display:flex;
+  height:100vh;
+}
+
+/* IZQUIERDA */
+.login-left{
+  width:50%;
+  padding:60px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+.logo{
+  width:200px;
+  margin-bottom:40px;
+}
+
+h2{
+  font-weight:400;
+  color:#4b5563;
+}
+
+p{
+  color:#6b7280;
+  margin-bottom:30px;
+}
+
+/* INPUTS */
+.input-group{
+  margin-bottom:20px;
+}
+
+.input-group label{
+  display:block;
+  margin-bottom:5px;
+  color:#6b7280;
+}
+
+.input-group input{
+  width:100%;
+  padding:10px;
+  border:none;
+  border-bottom:1px solid #ccc;
+  outline:none;
+}
+
+/* OPCIONES */
+.options{
+  margin-bottom:20px;
+  color:#6b7280;
+}
+
+/* BOTÓN */
+button{
+  background:#3f66c9;
+  color:white;
+  border:none;
+  padding:10px 20px;
+  cursor:pointer;
+}
+
+button:hover{
+  background:#2f4fa3;
+}
+
+/* MENSAJE ERROR */
+.mensaje{
+  margin-top:15px;
+  color:red;
+}
+
+/* DERECHA */
+.login-right{
+  width:50%;
+  background:url("https://images.unsplash.com/photo-1604079628040-94301bb21b91?q=80&w=2070") no-repeat center;
+  background-size:cover;
+}
