@@ -1,49 +1,44 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const people = [
+  const dependencias = [
     {
-      nombre: "Thomas Angulo",
-      categoria: "Docente",
-      ciudad: "Sede Central Medellín",
-      correo: "thomas.angulo@upb.edu.co",
-      dependencia: "Facultad de Ingeniería de Sistemas",
-      telefono: "+57 300 000 0000",
-      imagen: "thomas.jpeg"
-    },
-    {
-      nombre: "Juan Hernandez",
-      categoria: "Investigador",
+      nombre: "Admisiones",
+      tipo: "Atención al estudiante",
       ciudad: "Seccional Bucaramanga",
-      correo: "juan.hernandez@upb.edu.co",
-      dependencia: "Centro de Investigación e Innovación",
-      telefono: "+57 300 000 0000",
-      imagen: "hernandez.jpeg"
+      correo: "admisiones.bga@upb.edu.co",
+      ubicacion: "Campus Bucaramanga",
+      imagen: "admisiones.jpg"
     },
     {
-      nombre: "Juan Felipe",
-      categoria: "Administrativo",
-      ciudad: "Seccional Montería",
-      correo: "juan.calvo@upb.edu.co",
-      dependencia: "Dirección Administrativa",
-      telefono: "+57 300 000 0000",
-      imagen: "juan.jpeg"
-    },
-    {
-      nombre: "Santiago Figueroa",
-      categoria: "Docente",
-      ciudad: "Seccional Palmira",
-      correo: "santiago.figueroa@upb.edu.co",
-      dependencia: "Facultad de Ciencias Sociales",
-      telefono: "+57 300 000 0000",
-      imagen: "santiago.jpeg"
-    },
-    {
-      nombre: "Sandra Reyes",
-      categoria: "Docente",
+      nombre: "Registro y Control",
+      tipo: "Gestión académica",
       ciudad: "Seccional Bucaramanga",
-      correo: "sandra.reyes@upb.edu.co",
-      dependencia: "Facultad de Ingeniería de Sistemas",
-      telefono: "+57 300 000 0000",
-      imagen: "sandra.jpeg"
+      correo: "registro.bga@upb.edu.co",
+      ubicacion: "Campus Bucaramanga",
+      imagen: "registro.jpg"
+    },
+    {
+      nombre: "Ventanilla Financiera / Cartera",
+      tipo: "Servicios financieros",
+      ciudad: "Seccional Bucaramanga",
+      correo: "cartera.bga@upb.edu.co",
+      ubicacion: "Campus Bucaramanga",
+      imagen: "cartera.jpg"
+    },
+    {
+      nombre: "Soporte Tecnológico",
+      tipo: "Soporte institucional",
+      ciudad: "Seccional Bucaramanga",
+      correo: "soporte.bga@upb.edu.co",
+      ubicacion: "Campus Bucaramanga",
+      imagen: "soporte.jpg"
+    },
+    {
+      nombre: "Facultad de Ingeniería de Sistemas",
+      tipo: "Facultad",
+      ciudad: "Seccional Bucaramanga",
+      correo: "ingenieriasistemas.bga@upb.edu.co",
+      ubicacion: "Campus Bucaramanga",
+      imagen: "sistemas.jpg"
     }
   ];
 
@@ -57,66 +52,32 @@ document.addEventListener("DOMContentLoaded", () => {
   const subcatSelect = document.getElementById("subcatSelect");
   const citySelect = document.getElementById("citySelect");
 
-  const modal = document.getElementById("detailModal");
-  const modalClose = document.getElementById("modalClose");
-  const modalOk = document.getElementById("modalOk");
-
-  const mNombre = document.getElementById("mNombre");
-  const mCiudad = document.getElementById("mCiudad");
-  const mCategoria = document.getElementById("mCategoria");
-  const mCorreo = document.getElementById("mCorreo");
-  const mDependencia = document.getElementById("mDependencia");
-  const mTelefono = document.getElementById("mTelefono");
-
   let selectedLetter = "";
-
-  function openModal(persona) {
-    mNombre.textContent = persona.nombre;
-    mCiudad.textContent = persona.ciudad;
-    mCategoria.textContent = persona.categoria;
-    mCorreo.textContent = persona.correo;
-    mDependencia.textContent = persona.dependencia;
-    mTelefono.textContent = persona.telefono;
-
-    modal.classList.add("open");
-    modal.setAttribute("aria-hidden", "false");
-  }
-
-  function closeModal() {
-    modal.classList.remove("open");
-    modal.setAttribute("aria-hidden", "true");
-  }
 
   function render(list) {
     resultsEl.innerHTML = "";
-    counterEl.textContent = `Mostrando ${list.length} personas`;
+    counterEl.textContent = `Mostrando ${list.length} dependencias`;
 
     if (list.length === 0) {
       resultsEl.innerHTML = `<p style="color:#6b7280;">No hay resultados.</p>`;
       return;
     }
 
-    list.forEach((p) => {
+    list.forEach((d) => {
       const card = document.createElement("div");
       card.className = "card";
 
       card.innerHTML = `
-        <img src="${p.imagen}" alt="${p.nombre}">
+        <img src="${d.imagen}" alt="${d.nombre}">
         <div>
-          <a class="name-link" href="#">${p.nombre}</a>
-          <p><b>${p.ciudad.replace("Seccional ", "")}</b></p>
-          <p><b>Título:</b> ${p.categoria}</p>
-          <p><b>Dependencia:</b> ${p.dependencia}</p>
-          <p><b>Tel:</b> ${p.telefono}</p>
-          <p>${p.correo}</p>
+          <h3 class="name-link">${d.nombre}</h3>
+          <p><b>Bucaramanga</b></p>
+          <p><b>Tipo:</b> ${d.tipo}</p>
+          <p><b>Dependencia:</b> ${d.nombre}</p>
+          <p><b>Ubicación:</b> ${d.ubicacion}</p>
+          <p>${d.correo}</p>
         </div>
       `;
-
-      const link = card.querySelector(".name-link");
-      link.addEventListener("click", (e) => {
-        e.preventDefault();
-        openModal(p);
-      });
 
       resultsEl.appendChild(card);
     });
@@ -127,17 +88,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const subcat = subcatSelect.value;
     const city = citySelect.value;
 
-    const filtered = people.filter((p) => {
+    const filtered = dependencias.filter((d) => {
       const okText =
         text === "" ||
-        p.nombre.toLowerCase().includes(text) ||
-        p.correo.toLowerCase().includes(text) ||
-        p.dependencia.toLowerCase().includes(text);
+        d.nombre.toLowerCase().includes(text) ||
+        d.correo.toLowerCase().includes(text) ||
+        d.tipo.toLowerCase().includes(text) ||
+        d.ubicacion.toLowerCase().includes(text);
 
-      const okSub = subcat === "Todas" || p.categoria === subcat;
-      const okCity = city === "Todas las Seccionales" || p.ciudad === city;
+      const okSub = subcat === "Todas" || d.tipo === subcat;
+      const okCity = city === "Seccional Bucaramanga" || d.ciudad === city;
       const okLetter =
-        selectedLetter === "" || p.nombre.toUpperCase().startsWith(selectedLetter);
+        selectedLetter === "" || d.nombre.toUpperCase().startsWith(selectedLetter);
 
       return okText && okSub && okCity && okLetter;
     });
@@ -146,14 +108,15 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   btnSearch.addEventListener("click", applyFilters);
+
   btnReset.addEventListener("click", () => {
     searchInput.value = "";
     subcatSelect.value = "Todas";
-    citySelect.value = "Todas las Seccionales";
+    citySelect.value = "Seccional Bucaramanga";
     selectedLetter = "";
 
     document.querySelectorAll(".alphabet a").forEach((x) => x.classList.remove("active"));
-    render(people);
+    render(dependencias);
   });
 
   searchInput.addEventListener("input", applyFilters);
@@ -176,16 +139,5 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  modalClose.addEventListener("click", closeModal);
-  modalOk.addEventListener("click", closeModal);
-
-  modal.addEventListener("click", (e) => {
-    if (e.target === modal) closeModal();
-  });
-
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeModal();
-  });
-
-  render(people);
+  render(dependencias);
 });
