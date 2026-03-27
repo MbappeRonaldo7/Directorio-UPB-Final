@@ -1,1 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vista interna - Directorio UPB</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
 
+  <header class="topbar">
+    <div class="topbar-inner">
+      <img class="upb-logo" src="user.jpg" alt="UPB">
+      <nav class="topbar-nav">
+        <a href="index.html">Inicio</a>
+        <a href="#">Directorio Interno</a>
+        <a href="login.html">Cerrar sesión</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="page-header">
+    <div class="breadcrumb">
+      <a href="index.html">Inicio</a> &gt;
+      <span>Directorio Interno</span>
+    </div>
+
+    <h1>Directorio Interno UPB</h1>
+
+    <p class="page-description">
+      Consulte la información institucional del personal de la Seccional Bucaramanga.
+      Esta vista está orientada a usuarios autenticados.
+    </p>
+  </section>
+
+  <section class="hero">
+    <div class="hero-card">
+      <div class="hero-left">
+        <div class="hero-cols">
+          <ul>
+            <li>Docentes</li>
+            <li>Administrativos</li>
+            <li>Investigadores</li>
+            <li>Facultades</li>
+          </ul>
+
+          <ul>
+            <li>Ingeniería de Sistemas</li>
+            <li>Ciencias Sociales</li>
+            <li>Dirección Administrativa</li>
+            <li>Investigación e Innovación</li>
+          </ul>
+
+          <ul>
+            <li>Consulta por nombre</li>
+            <li>Consulta por dependencia</li>
+            <li>Consulta por tipo</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <div class="search-box">
+          <input id="searchInputPrivado" type="text" placeholder="Buscar por nombre..." />
+          <button id="btnSearchPrivado" type="button">Buscar</button>
+        </div>
+
+        <button class="btn-secondary" id="btnResetPrivado" type="button">Regresar</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="filters-line">
+    <div class="filters-inner">
+      <div class="filters-left">
+        <span id="counterPrivado">Mostrando 0 personas</span>
+      </div>
+
+      <div class="filters-right">
+        <label for="dependenciaSelect">Dependencia:</label>
+        <select id="dependenciaSelect">
+          <option value="Todas">Todas</option>
+          <option value="Facultad de Ingeniería de Sistemas">Facultad de Ingeniería de Sistemas</option>
+          <option value="Centro de Investigación e Innovación">Centro de Investigación e Innovación</option>
+          <option value="Dirección Administrativa">Dirección Administrativa</option>
+          <option value="Facultad de Ciencias Sociales">Facultad de Ciencias Sociales</option>
+        </select>
+
+        <label for="tipoSelect">Tipo:</label>
+        <select id="tipoSelect">
+          <option value="Todos">Todos</option>
+          <option value="Docente">Docente</option>
+          <option value="Investigador">Investigador</option>
+          <option value="Administrativo">Administrativo</option>
+        </select>
+      </div>
+    </div>
+  </section>
+
+  <section class="alphabet">
+    <a href="#">A</a><a href="#">B</a><a href="#">C</a><a href="#">D</a><a href="#">E</a><a href="#">F</a>
+    <a href="#">G</a><a href="#">H</a><a href="#">I</a><a href="#">J</a><a href="#">K</a><a href="#">L</a>
+    <a href="#">M</a><a href="#">N</a><a href="#">O</a><a href="#">P</a><a href="#">Q</a><a href="#">R</a>
+    <a href="#">S</a><a href="#">T</a><a href="#">U</a><a href="#">V</a><a href="#">W</a><a href="#">X</a>
+    <a href="#">Y</a><a href="#">Z</a>
+  </section>
+
+  <section class="results" id="resultsPrivado"></section>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <p><b>Universidad Pontificia Bolivariana</b></p>
+      <p>Seccional Bucaramanga</p>
+      <p>© 2026 Universidad Pontificia Bolivariana</p>
+    </div>
+  </footer>
+
+  <script src="privado.js"></script>
+</body>
+</html>
