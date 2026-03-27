@@ -7,7 +7,7 @@ document.getElementById("loginForm").addEventListener("submit", function(e) {
 
   mensaje.textContent = "";
 
-  if (usuario === "admin" && password === "1234") {
+  if (usuario === "admin" && password === "upb1234") {
     mensaje.style.color = "green";
     mensaje.textContent = "Ingreso correcto (Admin)";
 
