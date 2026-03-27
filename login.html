@@ -1,1 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - Directorio UPB</title>
+  <link rel="stylesheet" href="login.css">
+</head>
+<body>
 
+<div class="container">
+
+  <!-- LADO IZQUIERDO -->
+  <div class="login-left">
+
+    <img src="user.jpg" class="logo" alt="UPB">
+
+    <h2>Debe iniciar sesión para ingresar al sistema</h2>
+    <p>Para ingresar al sistema utilice los datos de directorio activo</p>
+
+    <form id="loginForm">
+
+      <div class="input-group">
+        <label>Usuario Directorio Activo</label>
+        <input type="text" id="usuario" required>
+      </div>
+
+      <div class="input-group">
+        <label>Password</label>
+        <input type="password" id="password" required>
+      </div>
+
+      <div class="options">
+        <label>
+          <input type="checkbox"> Recordar
+        </label>
+      </div>
+
+      <button type="submit">Entrar</button>
+
+    </form>
+
+    <p id="mensaje" class="mensaje"></p>
+
+  </div>
+
+  <!-- LADO DERECHO -->
+  <div class="login-right"></div>
+
+</div>
+
+<script src="login.js"></script>
+</body>
+</html>
