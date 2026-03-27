@@ -546,3 +546,13 @@ main{
   filter: brightness(0.92);
 }
 
+.topbar-nav{
+  display:flex;
+  gap:18px;
+  align-items:center;
+  width:100%;
+}
+
+.login-btn.right{
+  margin-left:auto;
+}
