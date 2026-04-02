@@ -1098,5 +1098,59 @@ main{
 }
 
 .admin-inline-group .btn-primary{
+
+  
   white-space:nowrap;
+}
+
+/* =========================
+   ADMINISTRACIÓN DE DEPENDENCIAS
+========================= */
+
+.admin-dependencies-section{
+  margin-top:24px;
+}
+
+.admin-dependency-form{
+  margin-bottom:22px;
+}
+
+.dependency-table-wrap{
+  margin-top:10px;
+}
+
+.dependency-name{
+  font-weight:700;
+  color:var(--text-strong);
+}
+
+.dependency-count{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:34px;
+  padding:6px 10px;
+  border-radius:999px;
+  background:#eef2ff;
+  color:#1d4ed8;
+  font-size:12px;
+  font-weight:800;
+}
+
+.btn-dependency-edit{
+  background:#e8f0ff;
+  color:#1d4ed8;
+}
+
+.btn-dependency-edit:hover{
+  background:#dbe7ff;
+}
+
+.btn-dependency-delete{
+  background:#ffe4e6;
+  color:#dc2626;
+}
+
+.btn-dependency-delete:hover{
+  background:#fecdd3;
 }
