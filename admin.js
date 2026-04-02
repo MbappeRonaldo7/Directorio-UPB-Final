@@ -29,7 +29,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const statInactivos = document.getElementById("statInactivos");
   const statDependencias = document.getElementById("statDependencias");
 
+  const dependenciaForm = document.getElementById("dependenciaForm");
+  const dependenciaNombreInput = document.getElementById("dependenciaNombre");
+  const dependenciaMessage = document.getElementById("dependenciaMessage");
+  const cancelDependenciaEditBtn = document.getElementById("cancelDependenciaEdit");
+  const dependenciasTableBody = document.getElementById("dependenciasTableBody");
+
   let editIndex = null;
+  let dependenciaEditIndex = null;
 
   let registros = JSON.parse(localStorage.getItem("registrosAdmin")) || [
     {
@@ -90,6 +97,17 @@ document.addEventListener("DOMContentLoaded", () => {
     return texto.trim().toLowerCase();
   }
 
+  function mostrarMensajeRegistro(texto, color) {
+    formMessage.style.color = color;
+    formMessage.textContent = texto;
+  }
+
+  function mostrarMensajeDependencia(texto, color) {
+    if (!dependenciaMessage) return;
+    dependenciaMessage.style.color = color;
+    dependenciaMessage.textContent = texto;
+  }
+
   function renderDependencias() {
     if (!dependenciaInput) return;
 
@@ -109,6 +127,47 @@ document.addEventListener("DOMContentLoaded", () => {
     if (valorActual && dependencias.includes(valorActual)) {
       dependenciaInput.value = valorActual;
     }
+  }
+
+  function renderDependenciasTable() {
+    if (!dependenciasTableBody) return;
+
+    dependenciasTableBody.innerHTML = "";
+
+    const dependenciasOrdenadas = dependencias
+      .slice()
+      .sort((a, b) => a.localeCompare(b, "es"));
+
+    dependenciasOrdenadas.forEach((dependencia) => {
+      const cantidad = registros.filter(
+        (registro) => registro.dependencia === dependencia
+      ).length;
+
+      const realIndex = dependencias.findIndex((dep) => dep === dependencia);
+
+      const row = document.createElement("tr");
+
+      row.innerHTML = `
+        <td>
+          <span class="dependency-name">${dependencia}</span>
+        </td>
+        <td>
+          <span class="dependency-count">${cantidad}</span>
+        </td>
+        <td>
+          <div class="row-actions">
+            <button class="btn-row btn-dependency-edit" data-index="${realIndex}" data-action="edit-dependency">
+              Editar
+            </button>
+            <button class="btn-row btn-dependency-delete" data-index="${realIndex}" data-action="delete-dependency">
+              Eliminar
+            </button>
+          </div>
+        </td>
+      `;
+
+      dependenciasTableBody.appendChild(row);
+    });
   }
 
   function actualizarStats() {
@@ -188,6 +247,13 @@ document.addEventListener("DOMContentLoaded", () => {
     renderDependencias();
   }
 
+  function resetDependenciaForm() {
+    if (!dependenciaForm) return;
+    dependenciaForm.reset();
+    dependenciaEditIndex = null;
+    mostrarMensajeDependencia("", "");
+  }
+
   function loadFormData(registro) {
     nombreInput.value = registro.nombre;
     tipoInput.value = registro.tipo;
@@ -198,14 +264,13 @@ document.addEventListener("DOMContentLoaded", () => {
     estadoInput.value = registro.estado;
   }
 
-  function agregarDependencia() {
+  function agregarDependenciaRapida() {
     if (!nuevaDependenciaInput) return;
 
     const nuevaDependencia = nuevaDependenciaInput.value.trim();
 
     if (!nuevaDependencia) {
-      formMessage.style.color = "#dc2626";
-      formMessage.textContent = "Ingrese el nombre de la nueva dependencia.";
+      mostrarMensajeRegistro("Ingrese el nombre de la nueva dependencia.", "#dc2626");
       return;
     }
 
@@ -214,21 +279,20 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
     if (existe) {
-      formMessage.style.color = "#dc2626";
-      formMessage.textContent = "Esa dependencia ya existe.";
+      mostrarMensajeRegistro("Esa dependencia ya existe.", "#dc2626");
       return;
     }
 
     dependencias.push(nuevaDependencia);
     guardarDependencias();
     renderDependencias();
+    renderDependenciasTable();
     actualizarStats();
 
     dependenciaInput.value = nuevaDependencia;
     nuevaDependenciaInput.value = "";
 
-    formMessage.style.color = "#15803d";
-    formMessage.textContent = "Dependencia agregada correctamente.";
+    mostrarMensajeRegistro("Dependencia agregada correctamente.", "#15803d");
   }
 
   form.addEventListener("submit", (e) => {
@@ -253,8 +317,7 @@ document.addEventListener("DOMContentLoaded", () => {
       !nuevoRegistro.oficina ||
       !nuevoRegistro.estado
     ) {
-      formMessage.style.color = "#dc2626";
-      formMessage.textContent = "Complete todos los campos obligatorios.";
+      mostrarMensajeRegistro("Complete todos los campos obligatorios.", "#dc2626");
       return;
     }
 
@@ -266,26 +329,79 @@ document.addEventListener("DOMContentLoaded", () => {
       dependencias.push(nuevoRegistro.dependencia);
       guardarDependencias();
       renderDependencias();
+      renderDependenciasTable();
     }
 
     if (editIndex === null) {
       registros.push(nuevoRegistro);
-      formMessage.style.color = "#15803d";
-      formMessage.textContent = "Registro creado correctamente.";
+      mostrarMensajeRegistro("Registro creado correctamente.", "#15803d");
     } else {
       registros[editIndex] = nuevoRegistro;
-      formMessage.style.color = "#15803d";
-      formMessage.textContent = "Registro actualizado correctamente.";
+      mostrarMensajeRegistro("Registro actualizado correctamente.", "#15803d");
     }
 
     guardarRegistros();
     renderTable();
+    renderDependenciasTable();
     resetForm();
   });
+
+  if (dependenciaForm) {
+    dependenciaForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const nombreDependencia = dependenciaNombreInput.value.trim();
+
+      if (!nombreDependencia) {
+        mostrarMensajeDependencia("Ingrese el nombre de la dependencia.", "#dc2626");
+        return;
+      }
+
+      const existe = dependencias.some((dep, index) => {
+        if (dependenciaEditIndex !== null && index === dependenciaEditIndex) return false;
+        return normalizarTexto(dep) === normalizarTexto(nombreDependencia);
+      });
+
+      if (existe) {
+        mostrarMensajeDependencia("Esa dependencia ya existe.", "#dc2626");
+        return;
+      }
+
+      if (dependenciaEditIndex === null) {
+        dependencias.push(nombreDependencia);
+        mostrarMensajeDependencia("Dependencia creada correctamente.", "#15803d");
+      } else {
+        const anterior = dependencias[dependenciaEditIndex];
+        dependencias[dependenciaEditIndex] = nombreDependencia;
+
+        registros = registros.map((registro) =>
+          registro.dependencia === anterior
+            ? { ...registro, dependencia: nombreDependencia }
+            : registro
+        );
+
+        guardarRegistros();
+        mostrarMensajeDependencia("Dependencia actualizada correctamente.", "#15803d");
+      }
+
+      guardarDependencias();
+      renderDependencias();
+      renderDependenciasTable();
+      renderTable();
+      actualizarStats();
+      resetDependenciaForm();
+    });
+  }
 
   cancelEditBtn.addEventListener("click", () => {
     resetForm();
   });
+
+  if (cancelDependenciaEditBtn) {
+    cancelDependenciaEditBtn.addEventListener("click", () => {
+      resetDependenciaForm();
+    });
+  }
 
   tableBody.addEventListener("click", (e) => {
     const button = e.target.closest("button");
@@ -297,8 +413,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (action === "edit") {
       editIndex = index;
       loadFormData(registros[index]);
-      formMessage.style.color = "#1d4ed8";
-      formMessage.textContent = "Editando registro seleccionado.";
+      mostrarMensajeRegistro("Editando registro seleccionado.", "#1d4ed8");
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
@@ -309,8 +424,7 @@ document.addEventListener("DOMContentLoaded", () => {
       guardarRegistros();
       renderTable();
 
-      formMessage.style.color = "#a16207";
-      formMessage.textContent = "El estado del registro fue actualizado.";
+      mostrarMensajeRegistro("El estado del registro fue actualizado.", "#a16207");
     }
 
     if (action === "delete") {
@@ -320,16 +434,58 @@ document.addEventListener("DOMContentLoaded", () => {
       registros.splice(index, 1);
       guardarRegistros();
       renderTable();
+      renderDependenciasTable();
       resetForm();
 
-      formMessage.style.color = "#dc2626";
-      formMessage.textContent = "Registro eliminado correctamente.";
+      mostrarMensajeRegistro("Registro eliminado correctamente.", "#dc2626");
     }
   });
 
+  if (dependenciasTableBody) {
+    dependenciasTableBody.addEventListener("click", (e) => {
+      const button = e.target.closest("button");
+      if (!button) return;
+
+      const index = Number(button.dataset.index);
+      const action = button.dataset.action;
+      const dependencia = dependencias[index];
+
+      if (action === "edit-dependency") {
+        dependenciaEditIndex = index;
+        dependenciaNombreInput.value = dependencia;
+        mostrarMensajeDependencia("Editando dependencia seleccionada.", "#1d4ed8");
+        window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+      }
+
+      if (action === "delete-dependency") {
+        const enUso = registros.some((registro) => registro.dependencia === dependencia);
+
+        if (enUso) {
+          mostrarMensajeDependencia(
+            "No se puede eliminar una dependencia que está asociada a registros.",
+            "#dc2626"
+          );
+          return;
+        }
+
+        const confirmar = confirm(`¿Está seguro de eliminar la dependencia "${dependencia}"?`);
+        if (!confirmar) return;
+
+        dependencias.splice(index, 1);
+        guardarDependencias();
+        renderDependencias();
+        renderDependenciasTable();
+        actualizarStats();
+        resetDependenciaForm();
+
+        mostrarMensajeDependencia("Dependencia eliminada correctamente.", "#dc2626");
+      }
+    });
+  }
+
   if (btnAddDependencia) {
     btnAddDependencia.addEventListener("click", () => {
-      agregarDependencia();
+      agregarDependenciaRapida();
     });
   }
 
@@ -337,7 +493,7 @@ document.addEventListener("DOMContentLoaded", () => {
     nuevaDependenciaInput.addEventListener("keydown", (e) => {
       if (e.key === "Enter") {
         e.preventDefault();
-        agregarDependencia();
+        agregarDependenciaRapida();
       }
     });
   }
@@ -359,5 +515,6 @@ document.addEventListener("DOMContentLoaded", () => {
   guardarDependencias();
   guardarRegistros();
   renderDependencias();
+  renderDependenciasTable();
   renderTable();
 });
