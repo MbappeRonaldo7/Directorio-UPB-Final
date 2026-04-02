@@ -1066,3 +1066,23 @@ main{
     flex-direction:column;
   }
 }
+
+.admin-search{
+  margin-bottom:16px;
+}
+
+.admin-search input{
+  width:100%;
+  padding:12px 14px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  font-size:14px;
+  outline:none;
+  transition:all .25s ease;
+  background:#fff;
+}
+
+.admin-search input:focus{
+  border-color:#93c5fd;
+  box-shadow:0 0 0 4px rgba(37,99,235,0.10);
+}
