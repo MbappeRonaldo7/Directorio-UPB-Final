@@ -17,6 +17,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const nombreInput = document.getElementById("nombre");
   const tipoInput = document.getElementById("tipo");
   const dependenciaInput = document.getElementById("dependencia");
+  const nuevaDependenciaInput = document.getElementById("nuevaDependencia");
+  const btnAddDependencia = document.getElementById("btnAddDependencia");
   const correoInput = document.getElementById("correo");
   const extensionInput = document.getElementById("extension");
   const oficinaInput = document.getElementById("oficina");
@@ -68,15 +70,55 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   ];
 
+  let dependencias = JSON.parse(localStorage.getItem("dependenciasAdmin")) || [
+    "Atención al estudiante",
+    "Gestión académica",
+    "Servicios financieros",
+    "Soporte institucional",
+    "Facultad"
+  ];
+
   function guardarRegistros() {
     localStorage.setItem("registrosAdmin", JSON.stringify(registros));
   }
 
+  function guardarDependencias() {
+    localStorage.setItem("dependenciasAdmin", JSON.stringify(dependencias));
+  }
+
+  function normalizarTexto(texto) {
+    return texto.trim().toLowerCase();
+  }
+
+  function renderDependencias() {
+    if (!dependenciaInput) return;
+
+    const valorActual = dependenciaInput.value;
+    dependenciaInput.innerHTML = '<option value="">Seleccione</option>';
+
+    dependencias
+      .slice()
+      .sort((a, b) => a.localeCompare(b, "es"))
+      .forEach((dependencia) => {
+        const option = document.createElement("option");
+        option.value = dependencia;
+        option.textContent = dependencia;
+        dependenciaInput.appendChild(option);
+      });
+
+    if (valorActual && dependencias.includes(valorActual)) {
+      dependenciaInput.value = valorActual;
+    }
+  }
+
   function actualizarStats() {
     const total = registros.length;
-    const activos = registros.filter(r => r.estado === "Activo").length;
-    const inactivos = registros.filter(r => r.estado === "Inactivo").length;
-    const dependenciasUnicas = new Set(registros.map(r => r.dependencia)).size;
+    const activos = registros.filter((r) => r.estado === "Activo").length;
+    const inactivos = registros.filter((r) => r.estado === "Inactivo").length;
+    const dependenciasUnicas = new Set([
+      ...dependencias,
+      ...registros.map((r) => r.dependencia)
+    ]).size;
 
     if (statTotal) statTotal.textContent = total;
     if (statActivos) statActivos.textContent = activos;
@@ -143,6 +185,7 @@ document.addEventListener("DOMContentLoaded", () => {
     editIndex = null;
     formMessage.textContent = "";
     formMessage.style.color = "";
+    renderDependencias();
   }
 
   function loadFormData(registro) {
@@ -153,6 +196,39 @@ document.addEventListener("DOMContentLoaded", () => {
     extensionInput.value = registro.extension;
     oficinaInput.value = registro.oficina;
     estadoInput.value = registro.estado;
+  }
+
+  function agregarDependencia() {
+    if (!nuevaDependenciaInput) return;
+
+    const nuevaDependencia = nuevaDependenciaInput.value.trim();
+
+    if (!nuevaDependencia) {
+      formMessage.style.color = "#dc2626";
+      formMessage.textContent = "Ingrese el nombre de la nueva dependencia.";
+      return;
+    }
+
+    const existe = dependencias.some(
+      (dep) => normalizarTexto(dep) === normalizarTexto(nuevaDependencia)
+    );
+
+    if (existe) {
+      formMessage.style.color = "#dc2626";
+      formMessage.textContent = "Esa dependencia ya existe.";
+      return;
+    }
+
+    dependencias.push(nuevaDependencia);
+    guardarDependencias();
+    renderDependencias();
+    actualizarStats();
+
+    dependenciaInput.value = nuevaDependencia;
+    nuevaDependenciaInput.value = "";
+
+    formMessage.style.color = "#15803d";
+    formMessage.textContent = "Dependencia agregada correctamente.";
   }
 
   form.addEventListener("submit", (e) => {
@@ -180,6 +256,16 @@ document.addEventListener("DOMContentLoaded", () => {
       formMessage.style.color = "#dc2626";
       formMessage.textContent = "Complete todos los campos obligatorios.";
       return;
+    }
+
+    const dependenciaExiste = dependencias.some(
+      (dep) => normalizarTexto(dep) === normalizarTexto(nuevoRegistro.dependencia)
+    );
+
+    if (!dependenciaExiste) {
+      dependencias.push(nuevoRegistro.dependencia);
+      guardarDependencias();
+      renderDependencias();
     }
 
     if (editIndex === null) {
@@ -241,6 +327,21 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  if (btnAddDependencia) {
+    btnAddDependencia.addEventListener("click", () => {
+      agregarDependencia();
+    });
+  }
+
+  if (nuevaDependenciaInput) {
+    nuevaDependenciaInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        agregarDependencia();
+      }
+    });
+  }
+
   if (searchInput) {
     searchInput.addEventListener("input", () => {
       renderTable();
@@ -255,6 +356,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  guardarDependencias();
   guardarRegistros();
+  renderDependencias();
   renderTable();
 });
