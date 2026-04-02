@@ -1086,3 +1086,17 @@ main{
   border-color:#93c5fd;
   box-shadow:0 0 0 4px rgba(37,99,235,0.10);
 }
+
+.admin-inline-group{
+  display:flex;
+  gap:8px;
+  align-items:center;
+}
+
+.admin-inline-group input{
+  flex:1;
+}
+
+.admin-inline-group .btn-primary{
+  white-space:nowrap;
+}
