@@ -5,172 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Panel de Administración - Directorio UPB</title>
   <link rel="stylesheet" href="style.css">
-  <style>
-    .admin-container{
-      max-width:1100px;
-      margin:30px auto;
-      padding:0 20px;
-    }
-
-    .admin-grid{
-      display:grid;
-      grid-template-columns: 1fr 1.4fr;
-      gap:24px;
-      align-items:start;
-    }
-
-    .admin-card{
-      background:#fff;
-      border:1px solid #e5e7eb;
-      border-radius:12px;
-      padding:20px;
-      box-shadow:0 8px 20px rgba(0,0,0,0.05);
-    }
-
-    .admin-card h2{
-      margin-top:0;
-      margin-bottom:16px;
-      font-size:22px;
-      color:#111827;
-    }
-
-    .admin-form{
-      display:grid;
-      gap:14px;
-    }
-
-    .admin-form label{
-      font-weight:600;
-      color:#374151;
-      margin-bottom:4px;
-      display:block;
-    }
-
-    .admin-form input,
-    .admin-form select{
-      width:100%;
-      padding:10px 12px;
-      border:1px solid #cbd5e1;
-      border-radius:8px;
-      font-size:14px;
-      outline:none;
-    }
-
-    .admin-form input:focus,
-    .admin-form select:focus{
-      border-color:#3f66c9;
-      box-shadow:0 0 0 3px rgba(63,102,201,0.12);
-    }
-
-    .admin-actions{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:8px;
-    }
-
-    .btn-admin{
-      border:none;
-      border-radius:8px;
-      padding:10px 16px;
-      cursor:pointer;
-      font-weight:600;
-    }
-
-    .btn-primary{
-      background:#004590;
-      color:#fff;
-    }
-
-    .btn-primary:hover{
-      background:#00356f;
-    }
-
-    .btn-secondary-admin{
-      background:#e5e7eb;
-      color:#111827;
-    }
-
-    .btn-secondary-admin:hover{
-      background:#d1d5db;
-    }
-
-    .admin-table{
-      width:100%;
-      border-collapse:collapse;
-      font-size:14px;
-    }
-
-    .admin-table th,
-    .admin-table td{
-      border-bottom:1px solid #e5e7eb;
-      padding:12px 10px;
-      text-align:left;
-      vertical-align:top;
-    }
-
-    .admin-table th{
-      background:#f9fafb;
-      color:#111827;
-    }
-
-    .estado-activo{
-      color:#15803d;
-      font-weight:700;
-    }
-
-    .estado-inactivo{
-      color:#b91c1c;
-      font-weight:700;
-    }
-
-    .table-buttons{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-    }
-
-    .mini-btn{
-      border:none;
-      border-radius:6px;
-      padding:6px 10px;
-      font-size:12px;
-      cursor:pointer;
-      font-weight:600;
-    }
-
-    .btn-edit{
-      background:#dbeafe;
-      color:#1d4ed8;
-    }
-
-    .btn-toggle{
-      background:#fef3c7;
-      color:#92400e;
-    }
-
-    .btn-delete{
-      background:#fee2e2;
-      color:#b91c1c;
-    }
-
-    .admin-note{
-      color:#6b7280;
-      font-size:14px;
-      margin-top:8px;
-    }
-
-    @media (max-width: 900px){
-      .admin-grid{
-        grid-template-columns:1fr;
-      }
-
-      .admin-table{
-        display:block;
-        overflow-x:auto;
-      }
-    }
-  </style>
 </head>
 <body>
 
@@ -181,112 +15,157 @@
       <nav class="topbar-nav">
         <a href="index.html">Inicio</a>
         <a href="privado.html">Vista interna</a>
-        <a href="#">Panel admin</a>
+        <a href="admin.html">Panel admin</a>
         <a href="#" class="login-btn" id="logoutBtn">Cerrar sesión</a>
       </nav>
     </div>
   </header>
 
-  <section class="page-header">
-    <div class="breadcrumb">
-      <a href="index.html">Inicio</a> &gt;
-      <a href="privado.html">Directorio Interno</a> &gt;
-      <span>Panel de Administración</span>
-    </div>
+  <div class="admin-wrapper">
 
-    <h1>Panel de Administración</h1>
-
-    <p class="page-description">
-      Gestione registros de personas y dependencias mediante formularios simples.
-      Esta vista está orientada al usuario administrador.
-    </p>
-  </section>
-
-  <div class="admin-container">
-    <div class="admin-grid">
-
-      <div class="admin-card">
-        <h2>Formulario de registro</h2>
-
-        <form id="adminForm" class="admin-form">
-          <div>
-            <label for="nombre">Nombre completo</label>
-            <input type="text" id="nombre" required>
-          </div>
-
-          <div>
-            <label for="tipo">Tipo</label>
-            <select id="tipo" required>
-              <option value="">Seleccione</option>
-              <option value="Docente">Docente</option>
-              <option value="Investigador">Investigador</option>
-              <option value="Administrativo">Administrativo</option>
-            </select>
-          </div>
-
-          <div>
-            <label for="dependencia">Dependencia</label>
-            <select id="dependencia" required>
-              <option value="">Seleccione</option>
-              <option value="Atención al estudiante">Atención al estudiante</option>
-              <option value="Gestión académica">Gestión académica</option>
-              <option value="Servicios financieros">Servicios financieros</option>
-              <option value="Soporte institucional">Soporte institucional</option>
-              <option value="Facultad">Facultad</option>
-            </select>
-          </div>
-
-          <div>
-            <label for="correo">Correo institucional</label>
-            <input type="email" id="correo" required>
-          </div>
-
-          <div>
-            <label for="extension">Extensión</label>
-            <input type="text" id="extension" required>
-          </div>
-
-          <div>
-            <label for="oficina">Oficina</label>
-            <input type="text" id="oficina" placeholder="Ej: Edificio A - 201" required>
-          </div>
-
-          <div>
-            <label for="estado">Estado</label>
-            <select id="estado" required>
-              <option value="Activo">Activo</option>
-              <option value="Inactivo">Inactivo</option>
-            </select>
-          </div>
-
-          <div class="admin-actions">
-            <button type="submit" class="btn-admin btn-primary">Guardar</button>
-            <button type="button" id="cancelEdit" class="btn-admin btn-secondary-admin">Cancelar</button>
-          </div>
-
-          <p class="admin-note" id="formMessage"></p>
-        </form>
+    <section class="admin-hero">
+      <div class="admin-breadcrumb">
+        <a href="index.html">Inicio</a> &gt;
+        <a href="privado.html">Directorio Interno</a> &gt;
+        <span>Panel de Administración</span>
       </div>
 
-      <div class="admin-card">
-        <h2>Registros del personal</h2>
+      <h1 class="admin-title">Panel de Administración</h1>
 
-        <table class="admin-table">
-          <thead>
-            <tr>
-              <th>Nombre</th>
-              <th>Tipo</th>
-              <th>Dependencia</th>
-              <th>Correo</th>
-              <th>Estado</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody id="adminTableBody"></tbody>
-        </table>
+      <p class="admin-subtitle">
+        Gestione registros de personas y dependencias de forma segura, organizada y eficiente.
+        Esta vista está orientada al usuario administrador para crear, editar, actualizar e inactivar
+        registros del personal institucional.
+      </p>
+    </section>
+
+    <section class="admin-stats">
+      <div class="stat-card">
+        <div class="stat-label">Total de registros</div>
+        <div class="stat-value" id="statTotal">24</div>
+        <div class="stat-extra">Personal almacenado en el sistema</div>
       </div>
 
-    </div>
+      <div class="stat-card">
+        <div class="stat-label">Activos</div>
+        <div class="stat-value" id="statActivos">19</div>
+        <div class="stat-extra">Usuarios actualmente visibles</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-label">Inactivos</div>
+        <div class="stat-value" id="statInactivos">5</div>
+        <div class="stat-extra">Registros deshabilitados</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-label">Dependencias</div>
+        <div class="stat-value" id="statDependencias">8</div>
+        <div class="stat-extra">Áreas disponibles para clasificación</div>
+      </div>
+    </section>
+
+    <section class="admin-grid">
+
+      <article class="admin-card">
+        <div class="admin-card-header">
+          <div class="admin-card-title">Formulario de registro</div>
+          <div class="admin-card-subtitle">
+            Complete la información para registrar o actualizar personal institucional.
+          </div>
+        </div>
+
+        <div class="admin-card-body">
+          <form id="adminForm" class="admin-form">
+
+            <div class="admin-form-group">
+              <label for="nombre">Nombre completo</label>
+              <input type="text" id="nombre" required>
+            </div>
+
+            <div class="admin-form-group">
+              <label for="tipo">Tipo</label>
+              <select id="tipo" required>
+                <option value="">Seleccione</option>
+                <option value="Docente">Docente</option>
+                <option value="Investigador">Investigador</option>
+                <option value="Administrativo">Administrativo</option>
+              </select>
+            </div>
+
+            <div class="admin-form-group">
+              <label for="dependencia">Dependencia</label>
+              <select id="dependencia" required>
+                <option value="">Seleccione</option>
+                <option value="Atención al estudiante">Atención al estudiante</option>
+                <option value="Gestión académica">Gestión académica</option>
+                <option value="Servicios financieros">Servicios financieros</option>
+                <option value="Soporte institucional">Soporte institucional</option>
+                <option value="Facultad">Facultad</option>
+              </select>
+            </div>
+
+            <div class="admin-form-group">
+              <label for="correo">Correo institucional</label>
+              <input type="email" id="correo" required>
+            </div>
+
+            <div class="admin-form-group">
+              <label for="extension">Extensión</label>
+              <input type="text" id="extension" required>
+            </div>
+
+            <div class="admin-form-group">
+              <label for="oficina">Oficina</label>
+              <input type="text" id="oficina" placeholder="Ej: Edificio A - 201" required>
+            </div>
+
+            <div class="admin-form-group">
+              <label for="estado">Estado</label>
+              <select id="estado" required>
+                <option value="Activo">Activo</option>
+                <option value="Inactivo">Inactivo</option>
+              </select>
+            </div>
+
+            <div class="admin-actions">
+              <button type="submit" class="btn-primary">Guardar</button>
+              <button type="button" id="cancelEdit" class="btn-secondary">Cancelar</button>
+            </div>
+
+            <p class="admin-note" id="formMessage"></p>
+          </form>
+        </div>
+      </article>
+
+      <article class="admin-card">
+        <div class="admin-card-header">
+          <div class="admin-card-title">Registros del personal</div>
+          <div class="admin-card-subtitle">
+            Consulte, edite, inhabilite o elimine los registros almacenados en el directorio.
+          </div>
+        </div>
+
+        <div class="admin-card-body admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Tipo</th>
+                <th>Dependencia</th>
+                <th>Contacto</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="adminTableBody">
+              <!-- admin.js renderiza aquí -->
+            </tbody>
+          </table>
+        </div>
+      </article>
+
+    </section>
   </div>
 
   <footer class="footer">
