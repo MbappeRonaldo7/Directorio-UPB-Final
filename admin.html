@@ -147,22 +147,28 @@
         </div>
 
         <div class="admin-card-body admin-table-wrap">
-          <table class="admin-table">
-            <thead>
-              <tr>
-                <th>Nombre</th>
-                <th>Tipo</th>
-                <th>Dependencia</th>
-                <th>Contacto</th>
-                <th>Estado</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody id="adminTableBody">
-              <!-- admin.js renderiza aquí -->
-            </tbody>
-          </table>
-        </div>
+
+  <div class="admin-search">
+    <input type="text" id="searchInput" placeholder="Buscar por nombre, correo, dependencia o tipo...">
+  </div>
+
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Tipo</th>
+        <th>Dependencia</th>
+        <th>Contacto</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody id="adminTableBody">
+      <!-- admin.js renderiza aquí -->
+    </tbody>
+  </table>
+
+</div>
       </article>
 
     </section>
