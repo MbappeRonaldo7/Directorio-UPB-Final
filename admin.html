@@ -97,11 +97,6 @@
               <label for="dependencia">Dependencia</label>
               <select id="dependencia" required>
                 <option value="">Seleccione</option>
-                <option value="Atención al estudiante">Atención al estudiante</option>
-                <option value="Gestión académica">Gestión académica</option>
-                <option value="Servicios financieros">Servicios financieros</option>
-                <option value="Soporte institucional">Soporte institucional</option>
-                <option value="Facultad">Facultad</option>
               </select>
             </div>
 
@@ -178,6 +173,58 @@
       </article>
 
     </section>
+
+    <section class="admin-dependencies-section">
+      <article class="admin-card">
+        <div class="admin-card-header">
+          <div class="admin-card-title">Administración de dependencias</div>
+          <div class="admin-card-subtitle">
+            Cree, edite o elimine las dependencias institucionales disponibles en el sistema.
+          </div>
+        </div>
+
+        <div class="admin-card-body">
+          <form id="dependenciaForm" class="admin-form admin-dependency-form">
+            <div class="admin-form-group">
+              <label for="dependenciaNombre">Nombre de la dependencia</label>
+              <input
+                type="text"
+                id="dependenciaNombre"
+                placeholder="Ej: Biblioteca Central"
+                required
+              >
+            </div>
+
+            <div class="admin-actions">
+              <button type="submit" class="btn-primary" id="btnGuardarDependencia">
+                Guardar dependencia
+              </button>
+              <button type="button" class="btn-secondary" id="cancelDependenciaEdit">
+                Cancelar
+              </button>
+            </div>
+
+            <p class="admin-note" id="dependenciaMessage"></p>
+          </form>
+
+          <div class="admin-table-wrap dependency-table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Dependencia</th>
+                  <th>Registros asociados</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="dependenciasTableBody">
+                <!-- admin.js renderiza aquí -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </article>
+    </section>
+
   </div>
 
   <footer class="footer">
