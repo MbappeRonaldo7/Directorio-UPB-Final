@@ -405,12 +405,10 @@ main{
   margin:0 auto;
   padding:16px 20px 4px 20px;
   display:flex;
-  flex-wrap:nowrap !important;
+  flex-wrap:nowrap;
   overflow-x:auto;
-  justify-content:center;
+  justify-content:flex-start; 
   gap:6px;
-  -webkit-overflow-scrolling:touch;
-  scrollbar-width:thin;
 }
 
 .alphabet a{
