@@ -21,6 +21,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const oficinaInput = document.getElementById("oficina");
   const estadoInput = document.getElementById("estado");
 
+  const statTotal = document.getElementById("statTotal");
+  const statActivos = document.getElementById("statActivos");
+  const statInactivos = document.getElementById("statInactivos");
+  const statDependencias = document.getElementById("statDependencias");
+
   let editIndex = null;
 
   let registros = JSON.parse(localStorage.getItem("registrosAdmin")) || [
@@ -66,6 +71,22 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem("registrosAdmin", JSON.stringify(registros));
   }
 
+  function actualizarStats() {
+    const total = registros.length;
+    const activos = registros.filter(r => r.estado === "Activo").length;
+    const inactivos = registros.filter(r => r.estado === "Inactivo").length;
+    const dependenciasUnicas = new Set(registros.map(r => r.dependencia)).size;
+
+    if (statTotal) statTotal.textContent = total;
+    if (statActivos) statActivos.textContent = activos;
+    if (statInactivos) statInactivos.textContent = inactivos;
+    if (statDependencias) statDependencias.textContent = dependenciasUnicas;
+  }
+
+  function getEstadoBadgeClass(estado) {
+    return estado === "Activo" ? "badge badge-active" : "badge badge-inactive";
+  }
+
   function renderTable() {
     tableBody.innerHTML = "";
 
@@ -74,29 +95,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
       row.innerHTML = `
         <td>${registro.nombre}</td>
-        <td>${registro.tipo}</td>
-        <td>${registro.dependencia}</td>
-        <td>${registro.correo}<br><small>Ext: ${registro.extension} | ${registro.oficina}</small></td>
-        <td class="${registro.estado === "Activo" ? "estado-activo" : "estado-inactivo"}">${registro.estado}</td>
         <td>
-          <div class="table-buttons">
-            <button class="mini-btn btn-edit" data-index="${index}" data-action="edit">Editar</button>
-            <button class="mini-btn btn-toggle" data-index="${index}" data-action="toggle">
+          <span class="badge badge-type">${registro.tipo}</span>
+        </td>
+        <td>${registro.dependencia}</td>
+        <td>
+          ${registro.correo}
+          <span class="cell-muted">Ext: ${registro.extension} | ${registro.oficina}</span>
+        </td>
+        <td>
+          <span class="${getEstadoBadgeClass(registro.estado)}">${registro.estado}</span>
+        </td>
+        <td>
+          <div class="row-actions">
+            <button class="btn-row btn-edit" data-index="${index}" data-action="edit">Editar</button>
+            <button class="btn-row btn-disable" data-index="${index}" data-action="toggle">
               ${registro.estado === "Activo" ? "Inactivar" : "Activar"}
             </button>
-            <button class="mini-btn btn-delete" data-index="${index}" data-action="delete">Eliminar</button>
+            <button class="btn-row btn-delete" data-index="${index}" data-action="delete">Eliminar</button>
           </div>
         </td>
       `;
 
       tableBody.appendChild(row);
     });
+
+    actualizarStats();
   }
 
   function resetForm() {
     form.reset();
     editIndex = null;
     formMessage.textContent = "";
+    formMessage.style.color = "";
   }
 
   function loadFormData(registro) {
@@ -122,13 +153,27 @@ document.addEventListener("DOMContentLoaded", () => {
       estado: estadoInput.value
     };
 
+    if (
+      !nuevoRegistro.nombre ||
+      !nuevoRegistro.tipo ||
+      !nuevoRegistro.dependencia ||
+      !nuevoRegistro.correo ||
+      !nuevoRegistro.extension ||
+      !nuevoRegistro.oficina ||
+      !nuevoRegistro.estado
+    ) {
+      formMessage.style.color = "#dc2626";
+      formMessage.textContent = "Complete todos los campos obligatorios.";
+      return;
+    }
+
     if (editIndex === null) {
       registros.push(nuevoRegistro);
-      formMessage.style.color = "green";
+      formMessage.style.color = "#15803d";
       formMessage.textContent = "Registro creado correctamente.";
     } else {
       registros[editIndex] = nuevoRegistro;
-      formMessage.style.color = "green";
+      formMessage.style.color = "#15803d";
       formMessage.textContent = "Registro actualizado correctamente.";
     }
 
@@ -153,19 +198,31 @@ document.addEventListener("DOMContentLoaded", () => {
       loadFormData(registros[index]);
       formMessage.style.color = "#1d4ed8";
       formMessage.textContent = "Editando registro seleccionado.";
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
     if (action === "toggle") {
-      registros[index].estado = registros[index].estado === "Activo" ? "Inactivo" : "Activo";
+      registros[index].estado =
+        registros[index].estado === "Activo" ? "Inactivo" : "Activo";
+
       guardarRegistros();
       renderTable();
+
+      formMessage.style.color = "#a16207";
+      formMessage.textContent = "El estado del registro fue actualizado.";
     }
 
     if (action === "delete") {
+      const confirmar = confirm("¿Está seguro de que desea eliminar este registro?");
+      if (!confirmar) return;
+
       registros.splice(index, 1);
       guardarRegistros();
       renderTable();
       resetForm();
+
+      formMessage.style.color = "#dc2626";
+      formMessage.textContent = "Registro eliminado correctamente.";
     }
   });
 
