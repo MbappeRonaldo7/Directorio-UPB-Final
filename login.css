@@ -29,6 +29,9 @@ body{
 
 body{
   min-height:100vh;
+  background:
+    radial-gradient(circle at top left, rgba(37,99,235,0.06), transparent 20%),
+    linear-gradient(135deg, #f4f7fb 0%, #eef4fb 100%);
 }
 
 .login-page{
@@ -56,6 +59,8 @@ body{
   box-shadow:var(--shadow-lg);
   padding:42px 36px;
   position:relative;
+  overflow:hidden;
+  animation:fadeUp .55s ease;
 }
 
 .login-card::before{
@@ -83,6 +88,7 @@ body{
   margin-bottom:10px;
   color:#0f172a;
   line-height:1.05;
+  letter-spacing:-0.5px;
 }
 
 .login-subtitle{
@@ -129,6 +135,7 @@ body{
 .field-group input:focus{
   border-color:#93c5fd;
   box-shadow:0 0 0 4px rgba(37,99,235,0.12);
+  transform:translateY(-1px);
 }
 
 .login-options{
@@ -170,6 +177,10 @@ body{
   box-shadow:0 20px 36px rgba(37,99,235,0.28);
 }
 
+.login-btn:active{
+  transform:translateY(0);
+}
+
 .mensaje{
   margin-top:14px;
   min-height:22px;
@@ -191,19 +202,39 @@ body{
   position:relative;
   overflow:hidden;
   background:
-    radial-gradient(circle at 35% 45%, rgba(255, 179, 0, 0.95), transparent 18%),
-    radial-gradient(circle at 60% 40%, rgba(255, 98, 0, 0.88), transparent 24%),
-    radial-gradient(circle at 75% 42%, rgba(214, 0, 42, 0.35), transparent 22%),
-    linear-gradient(135deg, #d8e8f7 0%, #c7dbee 100%);
+    radial-gradient(circle at 30% 40%, rgba(255, 179, 0, 0.92), transparent 18%),
+    radial-gradient(circle at 58% 44%, rgba(255, 98, 0, 0.82), transparent 24%),
+    radial-gradient(circle at 72% 42%, rgba(214, 0, 42, 0.28), transparent 22%),
+    linear-gradient(135deg, #dbeafe 0%, #c7dbee 100%);
 }
 
 .login-right::before{
   content:"";
   position:absolute;
   inset:0;
-  backdrop-filter:blur(55px);
+  backdrop-filter:blur(58px);
 }
 
+.login-right::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:url("user.jpg") center no-repeat;
+  background-size:320px;
+  opacity:0.06;
+}
+
+/* ANIMACIÓN SUAVE */
+@keyframes fadeUp{
+  from{
+    opacity:0;
+    transform:translateY(18px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
 
 /* RESPONSIVE */
 @media (max-width: 980px){
