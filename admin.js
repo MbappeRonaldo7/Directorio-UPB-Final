@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const cancelEditBtn = document.getElementById("cancelEdit");
   const formMessage = document.getElementById("formMessage");
   const logoutBtn = document.getElementById("logoutBtn");
+  const searchInput = document.getElementById("searchInput");
 
   const nombreInput = document.getElementById("nombre");
   const tipoInput = document.getElementById("tipo");
@@ -90,7 +91,21 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderTable() {
     tableBody.innerHTML = "";
 
+    const filtro = searchInput ? searchInput.value.toLowerCase().trim() : "";
+
     registros.forEach((registro, index) => {
+      const textoBusqueda = `
+        ${registro.nombre}
+        ${registro.tipo}
+        ${registro.dependencia}
+        ${registro.correo}
+        ${registro.extension}
+        ${registro.oficina}
+        ${registro.estado}
+      `.toLowerCase();
+
+      if (!textoBusqueda.includes(filtro)) return;
+
       const row = document.createElement("tr");
 
       row.innerHTML = `
@@ -225,6 +240,12 @@ document.addEventListener("DOMContentLoaded", () => {
       formMessage.textContent = "Registro eliminado correctamente.";
     }
   });
+
+  if (searchInput) {
+    searchInput.addEventListener("input", () => {
+      renderTable();
+    });
+  }
 
   if (logoutBtn) {
     logoutBtn.addEventListener("click", (e) => {
