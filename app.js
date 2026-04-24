@@ -1,47 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const dependencias = [
-    {
-      nombre: "Admisiones",
-      tipo: "Atención al estudiante",
-      ciudad: "Seccional Bucaramanga",
-      correo: "admisiones.bga@upb.edu.co",
-      ubicacion: "Campus Bucaramanga",
-      imagen: "admisiones.jpg"
-    },
-    {
-      nombre: "Registro y Control",
-      tipo: "Gestión académica",
-      ciudad: "Seccional Bucaramanga",
-      correo: "registro.bga@upb.edu.co",
-      ubicacion: "Campus Bucaramanga",
-      imagen: "registro.jpg"
-    },
-    {
-      nombre: "Ventanilla Financiera / Cartera",
-      tipo: "Servicios financieros",
-      ciudad: "Seccional Bucaramanga",
-      correo: "cartera.bga@upb.edu.co",
-      ubicacion: "Campus Bucaramanga",
-      imagen: "cartera.jpg"
-    },
-    {
-      nombre: "Soporte Tecnológico",
-      tipo: "Soporte institucional",
-      ciudad: "Seccional Bucaramanga",
-      correo: "soporte.bga@upb.edu.co",
-      ubicacion: "Campus Bucaramanga",
-      imagen: "soporte.jpg"
-    },
-    {
-      nombre: "Facultad de Ingeniería de Sistemas",
-      tipo: "Facultad",
-      ciudad: "Seccional Bucaramanga",
-      correo: "ingenieriasistemas.bga@upb.edu.co",
-      ubicacion: "Campus Bucaramanga",
-      imagen: "sistemas.jpg"
-    }
-  ];
-
   const resultsEl = document.getElementById("results");
   const counterEl = document.getElementById("counter");
 
@@ -53,6 +10,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const citySelect = document.getElementById("citySelect");
 
   let selectedLetter = "";
+  let dependencias = [];
+
+  function normalizarTexto(valor) {
+    return (valor || "").toString().trim().toLowerCase();
+  }
+
+  function obtenerImagen(d) {
+    return d.imagen && d.imagen.trim() !== "" ? d.imagen : "user.jpg";
+  }
 
   function render(list) {
     resultsEl.innerHTML = "";
@@ -67,15 +33,16 @@ document.addEventListener("DOMContentLoaded", () => {
       const card = document.createElement("div");
       card.className = "card";
 
+      const imagen = obtenerImagen(d);
+
       card.innerHTML = `
-        <img src="${d.imagen}" alt="${d.nombre}">
+        <img src="${imagen}" alt="${d.nombre || "Dependencia"}" onerror="this.src='user.jpg'">
         <div>
-          <h3 class="name-link">${d.nombre}</h3>
-          <p><b>Bucaramanga</b></p>
-          <p><b>Tipo:</b> ${d.tipo}</p>
-          <p><b>Dependencia:</b> ${d.nombre}</p>
-          <p><b>Ubicación:</b> ${d.ubicacion}</p>
-          <p>${d.correo}</p>
+          <h3 class="name-link">${d.nombre || "Sin nombre"}</h3>
+          <p><b>Ciudad:</b> ${d.ciudad || "Bucaramanga"}</p>
+          <p><b>Tipo:</b> ${d.tipo || "No disponible"}</p>
+          <p><b>Ubicación:</b> ${d.ubicacion || "No disponible"}</p>
+          <p>${d.correo || "No disponible"}</p>
         </div>
       `;
 
@@ -84,22 +51,37 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function applyFilters() {
-    const text = searchInput.value.trim().toLowerCase();
-    const subcat = subcatSelect.value;
-    const city = citySelect.value;
+    const text = normalizarTexto(searchInput.value);
+    const subcat = subcatSelect ? subcatSelect.value : "Todas";
+    const city = citySelect ? citySelect.value : "Seccional Bucaramanga";
 
     const filtered = dependencias.filter((d) => {
+      const nombre = normalizarTexto(d.nombre);
+      const tipo = normalizarTexto(d.tipo);
+      const correo = normalizarTexto(d.correo);
+      const ubicacion = normalizarTexto(d.ubicacion);
+      const ciudad = normalizarTexto(d.ciudad);
+
       const okText =
         text === "" ||
-        d.nombre.toLowerCase().includes(text) ||
-        d.correo.toLowerCase().includes(text) ||
-        d.tipo.toLowerCase().includes(text) ||
-        d.ubicacion.toLowerCase().includes(text);
+        nombre.includes(text) ||
+        tipo.includes(text) ||
+        correo.includes(text) ||
+        ubicacion.includes(text);
 
-      const okSub = subcat === "Todas" || d.tipo === subcat;
-      const okCity = city === "Seccional Bucaramanga" || d.ciudad === city;
+      const okSub =
+        !subcat ||
+        subcat === "Todas" ||
+        tipo === normalizarTexto(subcat);
+
+      const okCity =
+        !city ||
+        city === "Seccional Bucaramanga" ||
+        ciudad === normalizarTexto(city);
+
       const okLetter =
-        selectedLetter === "" || d.nombre.toUpperCase().startsWith(selectedLetter);
+        selectedLetter === "" ||
+        nombre.toUpperCase().startsWith(selectedLetter);
 
       return okText && okSub && okCity && okLetter;
     });
@@ -107,25 +89,53 @@ document.addEventListener("DOMContentLoaded", () => {
     render(filtered);
   }
 
-  btnSearch.addEventListener("click", applyFilters);
+  async function cargarDependencias() {
+    try {
+      const response = await fetch("http://localhost:3000/api/dependencias");
 
-  btnReset.addEventListener("click", () => {
-    searchInput.value = "";
-    subcatSelect.value = "Todas";
-    citySelect.value = "Seccional Bucaramanga";
-    selectedLetter = "";
+      if (!response.ok) {
+        throw new Error("No se pudieron cargar las dependencias");
+      }
 
-    document.querySelectorAll(".alphabet a").forEach((x) => x.classList.remove("active"));
-    render(dependencias);
-  });
+      dependencias = await response.json();
+      render(dependencias);
+    } catch (error) {
+      console.error("Error cargando dependencias:", error);
+      resultsEl.innerHTML = `<p style="color:red;">Error al cargar las dependencias desde el backend.</p>`;
+      counterEl.textContent = "Mostrando 0 dependencias";
+    }
+  }
 
-  searchInput.addEventListener("input", applyFilters);
-  searchInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") applyFilters();
-  });
+  if (btnSearch) {
+    btnSearch.addEventListener("click", applyFilters);
+  }
 
-  subcatSelect.addEventListener("change", applyFilters);
-  citySelect.addEventListener("change", applyFilters);
+  if (btnReset) {
+    btnReset.addEventListener("click", () => {
+      if (searchInput) searchInput.value = "";
+      if (subcatSelect) subcatSelect.value = "Todas";
+      if (citySelect) citySelect.value = "Seccional Bucaramanga";
+      selectedLetter = "";
+
+      document.querySelectorAll(".alphabet a").forEach((x) => x.classList.remove("active"));
+      render(dependencias);
+    });
+  }
+
+  if (searchInput) {
+    searchInput.addEventListener("input", applyFilters);
+    searchInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") applyFilters();
+    });
+  }
+
+  if (subcatSelect) {
+    subcatSelect.addEventListener("change", applyFilters);
+  }
+
+  if (citySelect) {
+    citySelect.addEventListener("change", applyFilters);
+  }
 
   document.querySelectorAll(".alphabet a").forEach((a) => {
     a.addEventListener("click", (e) => {
@@ -139,5 +149,5 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  render(dependencias);
+  cargarDependencias();
 });

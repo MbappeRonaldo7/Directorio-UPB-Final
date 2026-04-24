@@ -8,233 +8,270 @@
 </head>
 <body>
 
-  <header class="topbar">
-    <div class="topbar-inner">
-      <img class="upb-logo" src="user.jpg" alt="UPB">
+<header class="topbar">
+  <div class="topbar-inner">
+    <img class="upb-logo" src="user.jpg" alt="UPB">
 
-      <nav class="topbar-nav">
-        <a href="index.html">Inicio</a>
-        <a href="privado.html">Vista interna</a>
-        <a href="admin.html">Panel admin</a>
-        <a href="#" class="login-btn" id="logoutBtn">Cerrar sesión</a>
-      </nav>
+    <nav class="topbar-nav">
+      <a href="index.html">Inicio</a>
+      <a href="privado.html">Vista interna</a>
+      <a href="admin.html">Panel admin</a>
+      <a href="#" class="login-btn" id="logoutBtn">Cerrar sesión</a>
+    </nav>
+  </div>
+</header>
+
+<div class="admin-wrapper">
+
+  <section class="admin-hero">
+    <div class="admin-breadcrumb">
+      <a href="index.html">Inicio</a> >
+      <a href="privado.html">Directorio Interno</a> >
+      <span>Panel de Administración</span>
     </div>
-  </header>
 
-  <div class="admin-wrapper">
+    <h1 class="admin-title">Panel de Administración</h1>
 
-    <section class="admin-hero">
-      <div class="admin-breadcrumb">
-        <a href="index.html">Inicio</a> &gt;
-        <a href="privado.html">Directorio Interno</a> &gt;
-        <span>Panel de Administración</span>
+    <p class="admin-subtitle">
+      Gestione registros de personas y dependencias de forma segura,
+      organizada y eficiente.
+    </p>
+  </section>
+
+  <!-- ESTADÍSTICAS -->
+  <section class="admin-stats">
+
+    <div class="stat-card">
+      <div class="stat-label">Total de registros</div>
+      <div class="stat-value" id="statTotal">0</div>
+      <div class="stat-extra">Personal almacenado</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">Activos</div>
+      <div class="stat-value" id="statActivos">0</div>
+      <div class="stat-extra">Usuarios visibles</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">Inactivos</div>
+      <div class="stat-value" id="statInactivos">0</div>
+      <div class="stat-extra">Usuarios ocultos</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">Dependencias</div>
+      <div class="stat-value" id="statDependencias">0</div>
+      <div class="stat-extra">Áreas registradas</div>
+    </div>
+
+  </section>
+
+  <!-- CONTACTOS -->
+  <section class="admin-grid">
+
+    <article class="admin-card">
+
+      <div class="admin-card-header">
+        <div class="admin-card-title">Formulario de registro</div>
+        <div class="admin-card-subtitle">
+          Crear o editar personal institucional
+        </div>
       </div>
 
-      <h1 class="admin-title">Panel de Administración</h1>
+      <div class="admin-card-body">
 
-      <p class="admin-subtitle">
-        Gestione registros de personas y dependencias de forma segura, organizada y eficiente.
-        Esta vista está orientada al usuario administrador para crear, editar, actualizar e inactivar
-        registros del personal institucional.
-      </p>
-    </section>
+        <form id="adminForm" class="admin-form">
 
-    <section class="admin-stats">
-      <div class="stat-card">
-        <div class="stat-label">Total de registros</div>
-        <div class="stat-value" id="statTotal">24</div>
-        <div class="stat-extra">Personal almacenado en el sistema</div>
-      </div>
-
-      <div class="stat-card">
-        <div class="stat-label">Activos</div>
-        <div class="stat-value" id="statActivos">19</div>
-        <div class="stat-extra">Usuarios actualmente visibles</div>
-      </div>
-
-      <div class="stat-card">
-        <div class="stat-label">Inactivos</div>
-        <div class="stat-value" id="statInactivos">5</div>
-        <div class="stat-extra">Registros deshabilitados</div>
-      </div>
-
-      <div class="stat-card">
-        <div class="stat-label">Dependencias</div>
-        <div class="stat-value" id="statDependencias">8</div>
-        <div class="stat-extra">Áreas disponibles para clasificación</div>
-      </div>
-    </section>
-
-    <section class="admin-grid">
-
-      <article class="admin-card">
-        <div class="admin-card-header">
-          <div class="admin-card-title">Formulario de registro</div>
-          <div class="admin-card-subtitle">
-            Complete la información para registrar o actualizar personal institucional.
+          <div class="admin-form-group">
+            <label for="nombre">Nombre completo</label>
+            <input type="text" id="nombre" required>
           </div>
+
+          <div class="admin-form-group">
+            <label for="tipo">Cargo</label>
+            <input type="text" id="tipo" required>
+          </div>
+
+          <div class="admin-form-group">
+            <label for="dependencia">Dependencia</label>
+            <select id="dependencia" required>
+              <option value="">Seleccione</option>
+            </select>
+          </div>
+
+          <div class="admin-form-group">
+            <label for="correo">Correo institucional</label>
+            <input type="email" id="correo" required>
+          </div>
+
+          <div class="admin-form-group">
+            <label for="extension">Extensión</label>
+            <input type="text" id="extension" required>
+          </div>
+
+          <div class="admin-form-group">
+            <label for="oficina">Oficina</label>
+            <input type="text" id="oficina" required>
+          </div>
+
+          <div class="admin-form-group">
+            <label for="estado">Estado</label>
+            <select id="estado">
+              <option value="Activo">Activo</option>
+              <option value="Inactivo">Inactivo</option>
+            </select>
+          </div>
+
+          <div class="admin-actions">
+            <button type="submit" class="btn-primary">Guardar</button>
+            <button type="button" class="btn-secondary" id="cancelEdit">Cancelar</button>
+          </div>
+
+          <p class="admin-note" id="formMessage"></p>
+
+        </form>
+
+      </div>
+    </article>
+
+    <!-- TABLA CONTACTOS -->
+    <article class="admin-card">
+
+      <div class="admin-card-header">
+        <div class="admin-card-title">Registros del personal</div>
+      </div>
+
+      <div class="admin-card-body admin-table-wrap">
+
+        <div class="admin-search">
+          <input type="text" id="searchInput"
+          placeholder="Buscar por nombre, correo, dependencia o cargo...">
         </div>
 
-        <div class="admin-card-body">
-          <form id="adminForm" class="admin-form">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Cargo</th>
+              <th>Dependencia</th>
+              <th>Contacto</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
 
-            <div class="admin-form-group">
-              <label for="nombre">Nombre completo</label>
-              <input type="text" id="nombre" required>
-            </div>
+          <tbody id="adminTableBody"></tbody>
+        </table>
 
-            <div class="admin-form-group">
-              <label for="tipo">Tipo</label>
-              <select id="tipo" required>
-                <option value="">Seleccione</option>
-                <option value="Docente">Docente</option>
-                <option value="Investigador">Investigador</option>
-                <option value="Administrativo">Administrativo</option>
-              </select>
-            </div>
+      </div>
+    </article>
 
-            <div class="admin-form-group">
-              <label for="dependencia">Dependencia</label>
-              <select id="dependencia" required>
-                <option value="">Seleccione</option>
-              </select>
-            </div>
+  </section>
 
-            <div class="admin-form-group">
-              <label for="nuevaDependencia">Nueva dependencia</label>
-              <div class="admin-inline-group">
-                <input type="text" id="nuevaDependencia" placeholder="Ej: Biblioteca Central">
-                <button type="button" id="btnAddDependencia" class="btn-primary">Agregar</button>
-              </div>
-            </div>
+  <!-- DEPENDENCIAS -->
+  <section class="admin-dependencies-section">
 
-            <div class="admin-form-group">
-              <label for="correo">Correo institucional</label>
-              <input type="email" id="correo" required>
-            </div>
+    <article class="admin-card">
 
-            <div class="admin-form-group">
-              <label for="extension">Extensión</label>
-              <input type="text" id="extension" required>
-            </div>
-
-            <div class="admin-form-group">
-              <label for="oficina">Oficina</label>
-              <input type="text" id="oficina" placeholder="Ej: Edificio A - 201" required>
-            </div>
-
-            <div class="admin-form-group">
-              <label for="estado">Estado</label>
-              <select id="estado" required>
-                <option value="Activo">Activo</option>
-                <option value="Inactivo">Inactivo</option>
-              </select>
-            </div>
-
-            <div class="admin-actions">
-              <button type="submit" class="btn-primary">Guardar</button>
-              <button type="button" id="cancelEdit" class="btn-secondary">Cancelar</button>
-            </div>
-
-            <p class="admin-note" id="formMessage"></p>
-          </form>
-        </div>
-      </article>
-
-      <article class="admin-card">
-        <div class="admin-card-header">
-          <div class="admin-card-title">Registros del personal</div>
-          <div class="admin-card-subtitle">
-            Consulte, edite, inhabilite o elimine los registros almacenados en el directorio.
-          </div>
+      <div class="admin-card-header">
+        <div class="admin-card-title">
+          Administración de dependencias
         </div>
 
-        <div class="admin-card-body admin-table-wrap">
-          <div class="admin-search">
-            <input type="text" id="searchInput" placeholder="Buscar por nombre, correo, dependencia o tipo...">
+        <div class="admin-card-subtitle">
+          Cree, edite o elimine dependencias institucionales.
+        </div>
+      </div>
+
+      <div class="admin-card-body">
+
+        <form id="dependenciaForm" class="admin-form">
+
+          <!-- NUEVOS CAMPOS -->
+
+          <div class="admin-form-group">
+            <label for="dependenciaNombre">Nombre</label>
+            <input type="text" id="dependenciaNombre" required>
           </div>
+
+          <div class="admin-form-group">
+            <label for="dependenciaCiudad">Ciudad</label>
+            <input type="text" id="dependenciaCiudad"
+            placeholder="Ej: Bucaramanga">
+          </div>
+
+          <div class="admin-form-group">
+            <label for="dependenciaTipo">Tipo</label>
+            <input type="text" id="dependenciaTipo"
+            placeholder="Ej: Gestión académica">
+          </div>
+
+          <div class="admin-form-group">
+            <label for="dependenciaUbicacion">Ubicación</label>
+            <input type="text" id="dependenciaUbicacion"
+            placeholder="Ej: Campus Bucaramanga">
+          </div>
+
+          <div class="admin-form-group">
+            <label for="dependenciaCorreo">Correo</label>
+            <input type="email" id="dependenciaCorreo"
+            placeholder="Ej: facultad@upb.edu.co">
+          </div>
+
+          <div class="admin-actions">
+            <button type="submit" class="btn-primary"
+            id="btnGuardarDependencia">
+              Guardar dependencia
+            </button>
+
+            <button type="button"
+            class="btn-secondary"
+            id="cancelDependenciaEdit">
+              Cancelar
+            </button>
+          </div>
+
+          <p class="admin-note" id="dependenciaMessage"></p>
+
+        </form>
+
+        <!-- TABLA -->
+        <div class="admin-table-wrap dependency-table-wrap">
 
           <table class="admin-table">
+
             <thead>
               <tr>
-                <th>Nombre</th>
-                <th>Tipo</th>
                 <th>Dependencia</th>
-                <th>Contacto</th>
-                <th>Estado</th>
+                <th>Registros asociados</th>
                 <th>Acciones</th>
               </tr>
             </thead>
-            <tbody id="adminTableBody">
-              <!-- admin.js renderiza aquí -->
-            </tbody>
+
+            <tbody id="dependenciasTableBody"></tbody>
+
           </table>
-        </div>
-      </article>
 
-    </section>
-
-    <section class="admin-dependencies-section">
-      <article class="admin-card">
-        <div class="admin-card-header">
-          <div class="admin-card-title">Administración de dependencias</div>
-          <div class="admin-card-subtitle">
-            Cree, edite o elimine las dependencias institucionales disponibles en el sistema.
-          </div>
         </div>
 
-        <div class="admin-card-body">
-          <form id="dependenciaForm" class="admin-form admin-dependency-form">
-            <div class="admin-form-group">
-              <label for="dependenciaNombre">Nombre de la dependencia</label>
-              <input
-                type="text"
-                id="dependenciaNombre"
-                placeholder="Ej: Biblioteca Central"
-                required
-              >
-            </div>
+      </div>
 
-            <div class="admin-actions">
-              <button type="submit" class="btn-primary" id="btnGuardarDependencia">
-                Guardar dependencia
-              </button>
-              <button type="button" class="btn-secondary" id="cancelDependenciaEdit">
-                Cancelar
-              </button>
-            </div>
+    </article>
 
-            <p class="admin-note" id="dependenciaMessage"></p>
-          </form>
+  </section>
 
-          <div class="admin-table-wrap dependency-table-wrap">
-            <table class="admin-table">
-              <thead>
-                <tr>
-                  <th>Dependencia</th>
-                  <th>Registros asociados</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody id="dependenciasTableBody">
-                <!-- admin.js renderiza aquí -->
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </article>
-    </section>
+</div>
 
+<footer class="footer">
+  <div class="footer-content">
+    <p><b>Universidad Pontificia Bolivariana</b></p>
+    <p>Seccional Bucaramanga</p>
+    <p>© 2026 Universidad Pontificia Bolivariana</p>
   </div>
+</footer>
 
-  <footer class="footer">
-    <div class="footer-content">
-      <p><b>Universidad Pontificia Bolivariana</b></p>
-      <p>Seccional Bucaramanga</p>
-      <p>© 2026 Universidad Pontificia Bolivariana</p>
-    </div>
-  </footer>
+<script src="admin.js"></script>
 
-  <script src="admin.js"></script>
 </body>
 </html>

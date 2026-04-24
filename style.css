@@ -465,7 +465,10 @@ main{
   align-items:flex-start;
   box-shadow:var(--shadow-sm);
   position:relative;
-  overflow:hidden;
+
+  
+  height:auto;
+  overflow:visible;
 }
 
 .card::before{
@@ -506,6 +509,24 @@ main{
   margin:4px 0;
   color:var(--text);
   line-height:1.4;
+}
+
+.card div{
+  flex:1;
+}
+
+.card p{
+  margin:4px 0;
+  color:var(--text);
+  line-height:1.4;
+
+  /* 🔥 evita que el correo rompa la card */
+  word-break: break-word;
+}
+
+.card p:last-child{
+  color:#004590;
+  font-weight:600;
 }
 
 .name-link{

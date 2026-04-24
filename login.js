@@ -1,35 +1,135 @@
-document.getElementById("loginForm").addEventListener("submit", function(e) {
-  e.preventDefault();
+/* ===================================== */
+/* LOGIN.JS COMPLETO */
+/* ===================================== */
 
-  const usuario = document.getElementById("usuario").value.trim();
-  const password = document.getElementById("password").value.trim();
+document.addEventListener("DOMContentLoaded", () => {
+
+  /* ============================= */
+  /* ELEMENTOS */
+  /* ============================= */
+
+  const form = document.getElementById("loginForm");
+  const usuario = document.getElementById("usuario");
+  const password = document.getElementById("password");
   const mensaje = document.getElementById("mensaje");
 
-  mensaje.textContent = "";
+  const togglePass = document.getElementById("togglePass");
 
-  if (usuario === "admin" && password === "upb1234") {
-    localStorage.setItem("usuarioRol", "admin");
+  const panel = document.querySelector(".login-right");
 
-    mensaje.style.color = "green";
-    mensaje.textContent = "Ingreso correcto (Admin)";
 
-    setTimeout(() => {
-      window.location.href = "admin.html";
-    }, 1000);
+  /* ============================= */
+  /* MOSTRAR / OCULTAR PASSWORD */
+  /* ============================= */
 
-  } else if (usuario === "usuario" && password === "1234") {
-    localStorage.setItem("usuarioRol", "usuario");
+  if (togglePass) {
+    togglePass.addEventListener("click", () => {
 
-    mensaje.style.color = "green";
-    mensaje.textContent = "Ingreso correcto (Usuario)";
+      if (password.type === "password") {
+        password.type = "text";
+        togglePass.textContent = "🙈";
+      } else {
+        password.type = "password";
+        togglePass.textContent = "👁";
+      }
 
-    setTimeout(() => {
-      window.location.href = "privado.html";
-    }, 1000);
-
-  } else {
-    localStorage.removeItem("usuarioRol");
-    mensaje.style.color = "red";
-    mensaje.textContent = "Usuario o contraseña incorrectos";
+    });
   }
+
+
+  /* ============================= */
+  /* SLIDER IMÁGENES DERECHA */
+  /* ============================= */
+
+  const imagenes = [
+    "campus1.jpg",
+    "campus3.jpg",
+    
+  ];
+
+  let actual = 0;
+
+  function cambiarImagen() {
+
+    if (panel) {
+      panel.style.backgroundImage = `url('${imagenes[actual]}')`;
+    }
+
+    actual++;
+
+    if (actual >= imagenes.length) {
+      actual = 0;
+    }
+  }
+
+  cambiarImagen();
+
+  setInterval(cambiarImagen, 5000);
+
+
+  /* ============================= */
+  /* LOGIN */
+  /* ============================= */
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const user = usuario.value.trim();
+    const pass = password.value.trim();
+
+    mensaje.textContent = "";
+    mensaje.style.color = "#dc2626";
+
+    if (!user || !pass) {
+      mensaje.textContent = "Complete todos los campos.";
+      return;
+    }
+
+    try {
+
+      const respuesta = await fetch("http://localhost:3000/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          usuario: user,
+          password: pass
+        })
+      });
+
+      const data = await respuesta.json();
+
+      if (!respuesta.ok) {
+        mensaje.textContent = data.mensaje || "Credenciales inválidas.";
+        return;
+      }
+
+      /* Guardar sesión */
+
+      localStorage.setItem("usuario", data.usuario);
+      localStorage.setItem("usuarioRol", data.rol);
+
+      mensaje.style.color = "#16a34a";
+      mensaje.textContent = "Acceso correcto...";
+
+      setTimeout(() => {
+
+        if (data.rol === "admin") {
+          window.location.href = "admin.html";
+        } else {
+          window.location.href = "privado.html";
+        }
+
+      }, 900);
+
+    } catch (error) {
+
+      mensaje.textContent = "No se pudo conectar con el servidor.";
+
+      console.error(error);
+    }
+
+  });
+
 });

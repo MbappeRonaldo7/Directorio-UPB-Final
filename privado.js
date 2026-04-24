@@ -1,63 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
   const rol = localStorage.getItem("usuarioRol");
 
-  if (rol !== "usuario" && rol !== "admin") {
-    alert("Acceso no autorizado");
+  if (!rol) {
     window.location.href = "login.html";
     return;
   }
-
-  const registrosAdmin = JSON.parse(localStorage.getItem("registrosAdmin"));
-
-  const personas = registrosAdmin || [
-    {
-      nombre: "Thomas Angulo",
-      tipo: "Docente",
-      dependencia: "Facultad",
-      correo: "thomas.angulo@upb.edu.co",
-      extension: "1234",
-      oficina: "Edificio A - 201",
-      imagen: "thomas.jpeg"
-    },
-    {
-      nombre: "Juan Hernandez",
-      tipo: "Investigador",
-      dependencia: "Soporte institucional",
-      correo: "juan.hernandez@upb.edu.co",
-      extension: "2231",
-      oficina: "Edificio B - 104",
-      imagen: "hernandez.jpeg"
-    },
-    {
-      nombre: "Juan Felipe",
-      tipo: "Administrativo",
-      dependencia: "Servicios financieros",
-      correo: "juan.calvo@upb.edu.co",
-      extension: "3310",
-      oficina: "Edificio C - 302",
-      imagen: "juan.jpeg"
-    },
-    {
-      nombre: "Santiago Figueroa",
-      tipo: "Docente",
-      dependencia: "Gestión académica",
-      correo: "santiago.figueroa@upb.edu.co",
-      extension: "1540",
-      oficina: "Edificio D - 105",
-      imagen: "santiago.jpeg"
-    },
-    {
-      nombre: "Sandra Reyes",
-      tipo: "Docente",
-      dependencia: "Atención al estudiante",
-      correo: "sandra.reyes@upb.edu.co",
-      extension: "1288",
-      oficina: "Edificio A - 210",
-      imagen: "sandra.jpeg"
-    }
-  ];
-
-  const personasActivas = personas.filter((p) => !p.estado || p.estado === "Activo");
 
   const resultsEl = document.getElementById("resultsPrivado");
   const counterEl = document.getElementById("counterPrivado");
@@ -66,31 +13,54 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnReset = document.getElementById("btnResetPrivado");
   const dependenciaSelect = document.getElementById("dependenciaSelect");
   const tipoSelect = document.getElementById("tipoSelect");
+
+  /* CORREGIDO */
   const logoutBtn = document.getElementById("logoutBtnPrivado");
 
-  let selectedLetter = "";
+  let personas = [];
 
-  function render(list) {
+  /* CERRAR SESIÓN */
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      localStorage.clear();
+      window.location.href = "login.html";
+    });
+  }
+
+  function texto(v) {
+    return (v || "").toString().trim();
+  }
+
+  function nombreCompleto(p) {
+    return `${texto(p.nombre)} ${texto(p.apellido)}`.trim();
+  }
+
+  function render(lista) {
     resultsEl.innerHTML = "";
-    counterEl.textContent = `Mostrando ${list.length} personas`;
+    counterEl.textContent = `Mostrando ${lista.length} personas`;
 
-    if (list.length === 0) {
-      resultsEl.innerHTML = `<p style="color:#6b7280;">No hay resultados.</p>`;
+    if (lista.length === 0) {
+      resultsEl.innerHTML = "<p>No hay resultados.</p>";
       return;
     }
 
-    list.forEach((p) => {
+    lista.forEach((p) => {
       const card = document.createElement("div");
       card.className = "card";
 
       card.innerHTML = `
+        <img src="${texto(p.imagen) || "user.jpg"}" onerror="this.src='user.jpg'">
+
         <div>
-          <h3 class="name-link">${p.nombre}</h3>
-          <p><b>Tipo:</b> ${p.tipo}</p>
-          <p><b>Dependencia:</b> ${p.dependencia}</p>
-          <p><b>Correo:</b> ${p.correo}</p>
-          <p><b>Extensión:</b> ${p.extension}</p>
-          <p><b>Oficina:</b> ${p.oficina}</p>
+          <h3>${nombreCompleto(p)}</h3>
+          <p><b>Cargo:</b> ${texto(p.cargo)}</p>
+          <p><b>Dependencia:</b> ${texto(p.dependencia)}</p>
+          <p><b>Correo:</b> ${texto(p.correo)}</p>
+          <p><b>Oficina:</b> ${texto(p.oficina)}</p>
+          <p><b>Extensión:</b> ${texto(p.extension)}</p>
+          <p><b>Ciudad:</b> ${texto(p.ciudad)}</p>
+          <p><b>Sede:</b> ${texto(p.sede)}</p>
         </div>
       `;
 
@@ -98,75 +68,76 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  function applyFilters() {
-    const text = searchInput.value.trim().toLowerCase();
-    const dependencia = dependenciaSelect.value;
-    const tipo = tipoSelect.value;
+  function llenarFiltros() {
+    dependenciaSelect.innerHTML =
+      `<option value="Todas">Todas</option>`;
 
-    const filtered = personasActivas.filter((p) => {
-      const okText =
-        text === "" ||
-        p.nombre.toLowerCase().includes(text) ||
-        p.correo.toLowerCase().includes(text) ||
-        p.dependencia.toLowerCase().includes(text) ||
-        p.tipo.toLowerCase().includes(text) ||
-        p.oficina.toLowerCase().includes(text);
-
-      const okDependencia =
-        dependencia === "Todas" || p.dependencia === dependencia;
-
-      const okTipo =
-        tipo === "Todos" || p.tipo === tipo;
-
-      const okLetter =
-        selectedLetter === "" ||
-        p.nombre.toUpperCase().startsWith(selectedLetter);
-
-      return okText && okDependencia && okTipo && okLetter;
+    [...new Set(personas.map(p => p.dependencia))].forEach(dep => {
+      dependenciaSelect.innerHTML += `
+        <option value="${dep}">${dep}</option>
+      `;
     });
 
-    render(filtered);
+    tipoSelect.innerHTML =
+      `<option value="Todos">Todos</option>`;
+
+    [...new Set(personas.map(p => p.cargo))].forEach(tipo => {
+      tipoSelect.innerHTML += `
+        <option value="${tipo}">${tipo}</option>
+      `;
+    });
   }
 
-  btnSearch.addEventListener("click", applyFilters);
+  function aplicarFiltros() {
+    let lista = [...personas];
 
-  searchInput.addEventListener("input", applyFilters);
-  searchInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") applyFilters();
-  });
+    const textoBuscado = searchInput.value.toLowerCase();
+    const dep = dependenciaSelect.value;
+    const tipo = tipoSelect.value;
 
-  dependenciaSelect.addEventListener("change", applyFilters);
-  tipoSelect.addEventListener("change", applyFilters);
+    if (textoBuscado) {
+      lista = lista.filter(p =>
+        nombreCompleto(p).toLowerCase().includes(textoBuscado) ||
+        texto(p.correo).toLowerCase().includes(textoBuscado)
+      );
+    }
 
-  document.querySelectorAll(".alphabet a").forEach((a) => {
-    a.addEventListener("click", (e) => {
-      e.preventDefault();
-      selectedLetter = a.textContent.trim();
+    if (dep !== "Todas") {
+      lista = lista.filter(p => p.dependencia === dep);
+    }
 
-      document.querySelectorAll(".alphabet a").forEach((x) => x.classList.remove("active"));
-      a.classList.add("active");
+    if (tipo !== "Todos") {
+      lista = lista.filter(p => p.cargo === tipo);
+    }
 
-      applyFilters();
-    });
-  });
+    render(lista);
+  }
+
+  btnSearch.addEventListener("click", aplicarFiltros);
 
   btnReset.addEventListener("click", () => {
     searchInput.value = "";
     dependenciaSelect.value = "Todas";
     tipoSelect.value = "Todos";
-    selectedLetter = "";
-
-    document.querySelectorAll(".alphabet a").forEach((x) => x.classList.remove("active"));
-    render(personasActivas);
+    render(personas);
   });
 
-  if (logoutBtn) {
-    logoutBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      localStorage.removeItem("usuarioRol");
-      window.location.href = "login.html";
-    });
+  searchInput.addEventListener("input", aplicarFiltros);
+  dependenciaSelect.addEventListener("change", aplicarFiltros);
+  tipoSelect.addEventListener("change", aplicarFiltros);
+
+  async function iniciar() {
+    try {
+      const res = await fetch("http://localhost:3000/api/contactos");
+      personas = await res.json();
+
+      llenarFiltros();
+      render(personas);
+
+    } catch (error) {
+      resultsEl.innerHTML = "<p>Error cargando contactos</p>";
+    }
   }
 
-  render(personasActivas);
+  iniciar();
 });
