@@ -6,8 +6,8 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  const API_URL = "http://localhost:3000/api/admin";
-  const API_DEP = "http://localhost:3000/api/dependencias";
+  const API_URL = "https://directorio-upb-final.onrender.com/api/admin";
+const API_DEP = "https://directorio-upb-final.onrender.com/api/dependencias";
 
   let registros = [];
   let dependencias = [];

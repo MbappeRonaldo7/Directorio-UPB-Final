@@ -128,7 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function iniciar() {
     try {
-      const res = await fetch("http://localhost:3000/api/contactos");
+      const res = await fetch("https://directorio-upb-final.onrender.com/api/contactos");
       personas = await res.json();
 
       llenarFiltros();

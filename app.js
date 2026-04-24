@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function cargarDependencias() {
     try {
-      const response = await fetch("http://localhost:3000/api/dependencias");
+      const response = await fetch("https://directorio-upb-final.onrender.com/api/dependencias");
 
       if (!response.ok) {
         throw new Error("No se pudieron cargar las dependencias");
